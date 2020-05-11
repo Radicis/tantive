@@ -1,4 +1,4 @@
-import '../assets/css/index.css'
+import './assets/css/index.css'
 import React, { Component } from 'react'
 
 class App extends Component {

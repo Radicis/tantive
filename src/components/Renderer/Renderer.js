@@ -7,7 +7,7 @@ function Renderer({ content }) {
   const converter = new Converter();
   const html = converter.makeHtml(content);
   return (
-    <div className="markdown-body">
+    <div className="markdown-body p-2">
       <div dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );

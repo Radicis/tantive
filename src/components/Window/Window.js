@@ -5,7 +5,8 @@ import {
   faTimesCircle,
   faStopCircle,
   faChevronCircleRight,
-  faCog
+  faCog,
+  faSquare
 } from '@fortawesome/free-solid-svg-icons';
 import ScriptConfig from '../ScriptConfig/ScriptConfig';
 
@@ -17,7 +18,9 @@ function Window({
   runScript,
   terminateScript,
   setArgs,
-  status
+  status,
+  setFocused,
+  focused
 }) {
   const messagesEndRef = useRef(null);
   const [showConfig, setShowConfig] = useState(false);
@@ -52,11 +55,18 @@ function Window({
   };
 
   return (
-    <div className="window border-light flex flex-col text-mid">
+    <div
+      className={`window w-full h-full border-light flex flex-col text-mid ${
+        focused ? 'absolute' : ''
+      }`}
+    >
       <div className="p-2 flex flex-row bg-light">
         <div className="flex flex-grow">{name}</div>
         <div className="cursor-pointer mr-2" onClick={toggleConfig}>
           <FontAwesomeIcon icon={faCog} color="#c53030" size="lg" />
+        </div>
+        <div className="cursor-pointer mr-2" onClick={setFocused}>
+          <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
         </div>
         <div
           className="cursor-pointer mr-2"
@@ -100,8 +110,10 @@ Window.propTypes = {
   windowId: PropTypes.number,
   closeWindow: PropTypes.func,
   runScript: PropTypes.func,
+  focused: PropTypes.bool,
   terminateScript: PropTypes.func,
-  setArgs: PropTypes.func
+  setArgs: PropTypes.func,
+  setFocused: PropTypes.func
 };
 
 export default Window;

@@ -15,6 +15,8 @@ function SearchContainer() {
   const { scripts, documents, windows, showSearch } = state;
 
   const hideSearch = () => {
+    setFilteredDocuments(null);
+    setFilteredScripts(null);
     dispatch({
       type: 'HIDE_SEARCH'
     });

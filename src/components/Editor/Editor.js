@@ -9,13 +9,11 @@ function Editor({ handleContentChange, content }) {
     handleContentChange(value);
   };
   return (
-    <div className="flex flex-grow text-lg font-mono">
-      <textarea
-        className="bg-dark w-full outline-none"
-        value={localContent}
-        onChange={handleChange}
-      ></textarea>
-    </div>
+    <textarea
+      className="resize-none font-mono bg-dark w-full h-full outline-none"
+      value={localContent}
+      onChange={handleChange}
+    />
   );
 }
 

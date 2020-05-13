@@ -7,5 +7,64 @@
 /* Custom css */
 
 :root {
+  font-size: 14px;
+  @apply h-screen;
+  @apply w-screen;
+  --scrollbarBG: #CFD8DC;
+  --thumbBG: #90A4AE;
+}
+
+body, #root {
+  @apply h-screen;
+  @apply w-screen;
+}
+
+html, body {
+  @apply bg-dark;
+}
+
+.main-grid {
+  grid-template-columns: auto 1fr;
+}
+
+input {
+  max-width: 100%
+}
+
+.search-form {
+  width: 50%
 
 }
+
+.windows, .window {
+  min-width: 0;
+  min-height: 0;
+}
+
+.window:only-child {
+  @apply col-span-2;
+}
+
+.window:nth-child(n+1):not(:only-child) {
+  @apply border-r;
+}
+
+.window:nth-child(n+2) {
+  @apply border-l;
+}
+
+
+::-webkit-scrollbar {
+  width: 11px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG) ;
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+

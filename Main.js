@@ -1,21 +1,17 @@
 'use strict';
 
 // Import parts of electron to use
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
+const RunScript = require('./server/runner');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-
-// Keep a reference for dev mode
 let dev = false;
 
-// Broken:
-// if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
-//   dev = true
-// }
+const runningScripts = {};
 
 if (
   process.env.NODE_ENV !== undefined &&
@@ -109,4 +105,58 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.on('reset', () => {
+  for (const runId in runningScripts) {
+    try {
+      runningScripts[runId].terminate();
+    } catch (e) {
+      // fail silently
+    }
+    delete runningScripts[runId];
+  }
+});
+
+ipcMain.on('terminate', (e, { runId }) => {
+  try {
+    runningScripts[runId].terminate();
+  } catch (e) {
+    // fail silently
+  }
+});
+
+ipcMain.on('init', (e, { windowId, name }) => {
+  const newRun = new RunScript(name);
+  const { runId } = newRun;
+  runningScripts[runId] = newRun;
+  // init event handlers
+  newRun.on('message', (data) => {
+    mainWindow.send('message', { data, windowId });
+  });
+  newRun.on('error', (data) => {
+    mainWindow.send('error', { data, windowId });
+  });
+  newRun.on('exit', (code) => {
+    mainWindow.send('exit', { code, windowId });
+  });
+  mainWindow.send('ready', { windowId, runId });
+});
+
+ipcMain.on('run', (e, { runId, windowId, args = [] }) => {
+  let run;
+  if (runId) {
+    run = runningScripts[runId];
+    if (run) {
+      run.run(args);
+      mainWindow.send('status', { windowId, status: 'Running' });
+    } else {
+      mainWindow.send('error', { windowId });
+    }
+  }
+});
+
+ipcMain.on('close', (e, { runId }) => {
+  runningScripts[runId].terminate();
+  delete runningScripts[runId];
 });

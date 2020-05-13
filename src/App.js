@@ -1,19 +1,22 @@
 import './assets/css/index.css';
-import React, { Component } from 'react';
+import React from 'react';
+import Store from './store/Store';
+import WindowContainer from './containers/WindowContainer';
+import RendererBridgeContainer from './containers/RendererBridgeContainer';
+import SidebarContainer from './containers/SidebarContainer';
+import SearchContainer from './containers/SearchContainer';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1 className="text-green-800">Hello, Electron!</h1>
-
-        <p>
-          I hope you enjoy using basic-electron-react-boilerplate to start your
-          dev off right!
-        </p>
+function App() {
+  return (
+    <Store>
+      <RendererBridgeContainer />
+      <div className="relative main-grid grid grid-flow-col w-full h-full bg-dark">
+        <SearchContainer />
+        <SidebarContainer />
+        <WindowContainer />
       </div>
-    );
-  }
+    </Store>
+  );
 }
 
 export default App;

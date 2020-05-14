@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { Context } from '../store/Store';
 import { ipcRenderer } from 'electron';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCodeBranch } from '@fortawesome/free-solid-svg-icons';
-import Window from '../components/Window/Window';
+import ScriptWindow from '../components/ScriptWindow/ScriptWindow';
 import EditorWindow from '../components/EditorWindow/EditorWindow';
 
 function WindowContainer() {
   const [state, dispatch] = useContext(Context);
   const [focused, setIsFocused] = useState(false);
+  const [documentUpdateTimeout, setDocUpdateTimeout] = useState(null);
   const { windows } = state;
 
   const closeWindow = (windowId, runId) => {
@@ -39,15 +41,23 @@ function WindowContainer() {
     });
   };
 
-  const handleContentChange = (documentId, content) => {
-    console.log(documentId, content);
-    dispatch({
-      type: 'UPDATE_DOCUMENT',
-      payload: {
-        documentId,
-        content
-      }
-    });
+  const handleContentChange = (id, content, windowId) => {
+    clearTimeout(documentUpdateTimeout);
+    setDocUpdateTimeout(
+      setTimeout(async () => {
+        await axios.put(`http://localhost:5555/documents/${id}`, {
+          content
+        });
+        dispatch({
+          type: 'UPDATE_DOCUMENT',
+          payload: {
+            id,
+            content,
+            windowId
+          }
+        });
+      }, 2000)
+    );
   };
 
   const setArgs = (windowId, args) => {
@@ -87,11 +97,12 @@ function WindowContainer() {
               content,
               status,
               type,
-              documentId
+              id,
+              isNew
             } = window;
             if (type === 'SCRIPT') {
               return (
-                <Window
+                <ScriptWindow
                   key={windowId}
                   focused={focused === windowId}
                   logLines={logLines}
@@ -113,14 +124,13 @@ function WindowContainer() {
                 focused={focused === windowId}
                 content={content}
                 logLines={logLines}
+                isNew={isNew}
                 name={name}
                 closeWindow={() => closeWindow(windowId, runId)}
                 deleteDocument={() => deleteDocument(windowId)}
-                handleNameChange={(value) =>
-                  handleNameChange(documentId, value)
-                }
+                handleNameChange={(value) => handleNameChange(id, value)}
                 handleContentChange={(value) =>
-                  handleContentChange(documentId, value)
+                  handleContentChange(id, value, windowId)
                 }
                 setFocused={() => setFocused(windowId)}
               />

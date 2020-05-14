@@ -10,7 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import ScriptConfig from '../ScriptConfig/ScriptConfig';
 
-function Window({
+function ScriptWindow({
   logLines,
   name,
   params,
@@ -102,7 +102,7 @@ function Window({
   );
 }
 
-Window.propTypes = {
+ScriptWindow.propTypes = {
   name: PropTypes.string,
   status: PropTypes.string,
   logLines: PropTypes.array,
@@ -116,4 +116,4 @@ Window.propTypes = {
   setFocused: PropTypes.func
 };
 
-export default Window;
+export default ScriptWindow;

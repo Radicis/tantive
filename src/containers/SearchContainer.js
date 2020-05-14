@@ -45,14 +45,21 @@ function SearchContainer() {
 
   const filter = (e) => {
     const { value } = e.target;
-    setFilteredScripts(
-      scripts.filter((s) => s.name.toUpperCase().includes(value.toUpperCase()))
-    );
-    setFilteredDocuments(
-      documents.filter((s) =>
-        s.name.toUpperCase().includes(value.toUpperCase())
-      )
-    );
+    if (value === '') {
+      setFilteredScripts(null);
+      setFilteredDocuments(null);
+    } else {
+      setFilteredScripts(
+        scripts.filter((s) =>
+          s.name.toUpperCase().includes(value.toUpperCase())
+        )
+      );
+      setFilteredDocuments(
+        documents.filter((s) =>
+          s.name.toUpperCase().includes(value.toUpperCase())
+        )
+      );
+    }
   };
 
   const renderScript = (script) => {
@@ -85,12 +92,12 @@ function SearchContainer() {
     <React.Fragment>
       {showSearch ? (
         <div
-          className="search-container flex w-full z-10 h-full absolute items-center justify-center"
+          className="search-container flex w-full z-10 h-full absolute items-start justify-center"
           onClick={() => hideSearch()}
         >
           <form
             onClick={handleClick}
-            className="search-form rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid"
+            className="search-form rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid mt-12"
           >
             <div className="text-xl flex flex-row p-4">
               <FontAwesomeIcon
@@ -100,7 +107,7 @@ function SearchContainer() {
                 size="lg"
               />
               <input
-                className="bg-light flex flex-grow"
+                className="bg-light flex flex-grow outline-none"
                 placeholder="Script Search"
                 onChange={filter}
               />
@@ -111,7 +118,7 @@ function SearchContainer() {
                   {filteredScripts.map(renderScript)}
                 </div>
               ) : (
-                <div className="text-xl my-4 px-4">No Scripts found</div>
+                <div className="text-center my-4 px-4">No Scripts found</div>
               )
             ) : (
               ''
@@ -122,7 +129,7 @@ function SearchContainer() {
                   {filteredDocuments.map(renderDocument)}
                 </div>
               ) : (
-                <div className="text-xl my-4 px-4">No Documents found</div>
+                <div className="text-center my-4 px-4">No Documents found</div>
               )
             ) : (
               ''

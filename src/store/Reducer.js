@@ -11,27 +11,42 @@ const createNewScriptWindow = (script, count) => {
   };
 };
 
-const createNewEditorWindow = (document, count) => {
-  const { name, content, documentId } = document;
+const createNewEditorWindow = (document, count, isNew) => {
+  const { name, content, id } = document;
   return {
     windowId: count,
-    documentId,
+    id,
     name,
     content,
     type: 'MARKDOWN',
-    status: 'Rendering'
+    status: 'Rendering',
+    isNew
   };
 };
 
 const Reducer = (state, action) => {
   switch (action.type) {
+    case 'SET_SCRIPTS':
+      return {
+        ...state,
+        scripts: action.payload
+      };
+    case 'SET_DOCUMENTS':
+      return {
+        ...state,
+        documents: action.payload
+      };
     case 'CREATE_DOCUMENT_WINDOW':
       return {
         ...state,
         windows: [
           ...state.windows,
           {
-            ...createNewEditorWindow(action.payload, state.windows.length)
+            ...createNewEditorWindow(
+              state.documents.find((d) => d.id === action.payload.id),
+              state.windows.length,
+              action.payload.isNew
+            )
           }
         ]
       };
@@ -44,13 +59,22 @@ const Reducer = (state, action) => {
       return {
         ...state,
         documents: state.documents.map((d) => {
-          if (d.documentId === action.payload.documentId) {
+          if (d.id === action.payload.id) {
             return {
               ...d,
               content: action.payload.content
             };
           }
           return d;
+        }),
+        windows: state.windows.map((w) => {
+          if (w.windowId === action.payload.windowId) {
+            return {
+              ...w,
+              content: action.payload.content
+            };
+          }
+          return w;
         })
       };
     case 'CREATE_SCRIPT_WINDOW':
@@ -135,6 +159,11 @@ const Reducer = (state, action) => {
       return {
         ...state,
         showSearch: false
+      };
+    case 'SET_LOADING':
+      return {
+        ...state,
+        loading: action.payload
       };
     default:
       return state;

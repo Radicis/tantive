@@ -4,7 +4,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
-const RunScript = require('./server/runner');
+const RunScript = require('./server/models/runScript');
+const RunString = require('./server/models/runString');
+const server = require('./server');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -126,8 +128,16 @@ ipcMain.on('terminate', (e, { runId }) => {
   }
 });
 
-ipcMain.on('init', (e, { windowId, name }) => {
-  const newRun = new RunScript(name);
+ipcMain.on('init', (e, { windowId, name, path, string }) => {
+  let newRun;
+  if (name && path) {
+    newRun = new RunScript(name, path);
+  } else if (string) {
+    newRun = new RunString(string);
+  } else {
+    mainWindow.send('error', { windowId });
+    return;
+  }
   const { runId } = newRun;
   runningScripts[runId] = newRun;
   // init event handlers
@@ -159,4 +169,8 @@ ipcMain.on('run', (e, { runId, windowId, args = [] }) => {
 ipcMain.on('close', (e, { runId }) => {
   runningScripts[runId].terminate();
   delete runningScripts[runId];
+});
+
+server.listen(5555, () => {
+  console.info(`${new Date()}: Server started on port 5555`);
 });

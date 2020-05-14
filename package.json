@@ -43,6 +43,11 @@
   },
   "dependencies": {
     "@opuscapita/react-markdown": "^2.3.12",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "electron-store": "^5.1.1",
+    "express": "^4.17.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

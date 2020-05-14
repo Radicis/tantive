@@ -1,23 +1,30 @@
 const UUID = require('uuid').v4;
+const fs = require('fs');
 const fork = require('child_process').fork;
 const { join } = require('path');
 const EventEmitter = require('events');
 
 const scriptRootPath = join(__dirname, 'scripts');
 
-class RunScript extends EventEmitter {
-  constructor(scriptName) {
+class RunString extends EventEmitter {
+  constructor(scriptString) {
     super();
-    this.scriptPath = join(scriptRootPath, `${scriptName}.js`);
+    this.scriptPath = join(scriptRootPath, 'tmp', `${UUID()}.js`);
+    fs.writeFileSync(this.scriptPath, scriptString);
     this.runId = UUID();
   }
 
   terminate() {
     this.fp.kill('SIGINT');
+    try {
+      fs.unlinkSync(this.scriptPath);
+    } catch (e) {
+      // ignore
+    }
   }
 
-  run(args) {
-    this.fp = fork(this.scriptPath, args, { silent: true });
+  run() {
+    this.fp = fork(this.scriptPath, [], { silent: true });
     if (!this.fp && this.fp.stdout) {
       this.emit('error');
     } else {
@@ -35,4 +42,4 @@ class RunScript extends EventEmitter {
   }
 }
 
-module.exports = RunScript;
+module.exports = RunString;

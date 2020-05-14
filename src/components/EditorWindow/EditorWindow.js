@@ -17,11 +17,14 @@ function EditorWindow({
   handleContentChange,
   setFocused,
   focused,
+  isNew,
   handleNameChange
 }) {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(!isNew);
+  const [localIsNew, setIsNew] = useState(isNew);
   const [localName, setLocalName] = useState(name);
   const toggleRender = () => {
+    setIsNew(false);
     setRender(!render);
   };
   const handleChange = (e) => {
@@ -37,7 +40,7 @@ function EditorWindow({
     >
       <div className="p-2 flex flex-row bg-light">
         <div className="flex flex-grow">
-          {render ? (
+          {!localIsNew && render ? (
             localName
           ) : (
             <div className="flex flex-row items-center">
@@ -61,8 +64,8 @@ function EditorWindow({
           <FontAwesomeIcon icon={faTimesCircle} color="#c53030" size="lg" />
         </div>
       </div>
-      <div className="bg-dark flex flex-grow overflow-auto">
-        {render ? (
+      <div className="bg-dark flex flex-grow overflow-auto p-2">
+        {!localIsNew && render ? (
           <Renderer
             handleContentChange={handleContentChange}
             content={content}
@@ -81,6 +84,7 @@ EditorWindow.propTypes = {
   windowId: PropTypes.number,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
+  isNew: PropTypes.bool,
   handleContentChange: PropTypes.func,
   handleNameChange: PropTypes.func,
   setFocused: PropTypes.func

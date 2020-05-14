@@ -11,6 +11,7 @@ function Editor({ handleContentChange, content }) {
   return (
     <textarea
       className="resize-none font-mono bg-dark w-full h-full outline-none"
+      placeholder="Type Here.."
       value={localContent}
       onChange={handleChange}
     />

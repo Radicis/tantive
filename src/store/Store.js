@@ -1,14 +1,13 @@
 import React, { createContext, useReducer } from 'react';
 import Reducer from './Reducer';
 
-import scripts from '../../scripts.json';
-
 const initialState = {
   windows: [],
-  scripts,
+  scripts: [],
   documents: [],
   showSearch: false,
-  render: false
+  render: false,
+  loading: true
 };
 
 // eslint-disable-next-line react/prop-types

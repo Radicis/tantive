@@ -5,6 +5,7 @@ import {
   faTimesCircle,
   faStopCircle,
   faChevronCircleRight,
+  faWindowClose,
   faCog,
   faSquare
 } from '@fortawesome/free-solid-svg-icons';
@@ -82,7 +83,7 @@ function ScriptWindow({
           />
         </div>
         <div className="cursor-pointer" onClick={closeWindow}>
-          <FontAwesomeIcon icon={faTimesCircle} color="#c53030" size="lg" />
+          <FontAwesomeIcon icon={faWindowClose} color="#c53030" size="lg" />
         </div>
       </div>
       {showConfig ? (

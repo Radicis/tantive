@@ -19,24 +19,6 @@ function CreateContainer() {
     e.stopPropagation();
   };
 
-  const createScriptWindow = () => {
-    hideCreate();
-    dispatch({
-      type: 'CREATE_SCRIPT_WINDOW',
-      payload: name
-    });
-    ipcRenderer.send('init', { windowId: windows.length, name });
-  };
-
-  const createConsoleWindow = () => {
-    hideCreate();
-    dispatch({
-      type: 'CREATE_SCRIPT_WINDOW',
-      payload: name
-    });
-    ipcRenderer.send('init', { windowId: windows.length, name });
-  };
-
   const handleSubmit = () => {
     if (name && filePath) {
       dispatch({
@@ -94,13 +76,15 @@ function CreateContainer() {
                 id="file"
                 onChange={() => setFile(fileInputRef.current.files[0])}
                 placeholder="Script Path"
-                className="flex flex-grow outline-none p -2 mb-2"
+                className="flex flex-grow outline-none p-2 mb-2"
                 type="file"
               />
 
               <div>Args</div>
             </div>
-            <button type="submit">OK</button>
+            <button type="submit" className="outline-none">
+              OK
+            </button>
           </form>
         </div>
       ) : (

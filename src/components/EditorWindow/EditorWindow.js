@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTimesCircle,
+  faWindowClose,
   faRemoveFormat,
   faSquare,
   faEdit
@@ -66,7 +67,7 @@ function EditorWindow({
           <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
         </div>
         <div className="cursor-pointer" onClick={closeWindow}>
-          <FontAwesomeIcon icon={faTimesCircle} color="#c53030" size="lg" />
+          <FontAwesomeIcon icon={faWindowClose} color="#c53030" size="lg" />
         </div>
       </div>
       <div className="bg-dark flex flex-grow overflow-auto p-2">

@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
   faCodeBranch,
-  faRemoveFormat
+  faRemoveFormat,
+  faBox
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { ipcRenderer } from 'electron';
 
 function SidebarContainer() {
   // eslint-disable-next-line no-unused-vars
@@ -31,6 +33,12 @@ function SidebarContainer() {
     });
   };
 
+  const createConsoleWindow = () => {
+    dispatch({
+      type: 'CREATE_COSOLE_WINDOW'
+    });
+  };
+
   const createScript = () => {
     dispatch({
       type: 'SHOW_CREATE'
@@ -50,19 +58,25 @@ function SidebarContainer() {
       </div>
       <div
         className="transition duration-200 ease-in-out rounded-lg shadow flex p-2 cursor-pointer bg-red-700 hover:bg-red-600 mb-4 justify-center"
-        onClick={() => createScript()}
+        onClick={createScript}
       >
         <FontAwesomeIcon icon={faCodeBranch} color="#fefefe" size="lg" />
       </div>
       <div
         className="transition duration-200 ease-in-out rounded-lg shadow flex p-2 cursor-pointer bg-red-700 hover:bg-red-600 mb-4 justify-center"
-        onClick={() => createDocument()}
+        onClick={createConsoleWindow}
+      >
+        <FontAwesomeIcon icon={faBox} color="#fefefe" size="lg" />
+      </div>
+      <div
+        className="transition duration-200 ease-in-out rounded-lg shadow flex p-2 cursor-pointer bg-red-700 hover:bg-red-600 mb-4 justify-center"
+        onClick={createDocument}
       >
         <FontAwesomeIcon icon={faRemoveFormat} color="#fefefe" size="lg" />
       </div>
       <div
         className="transition duration-200 ease-in-out rounded-lg p-2 flex cursor-pointer justify-center hover:bg-dark"
-        onClick={() => find()}
+        onClick={find}
       >
         <FontAwesomeIcon icon={faSearch} color="#a9a9aa" size="lg" />
       </div>

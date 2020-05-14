@@ -32,7 +32,8 @@ input {
 }
 
 .search-form {
-  width: 50%
+  width: 50%;
+  max-height: 80%;
 }
 
 .windows {

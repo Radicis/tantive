@@ -11,13 +11,14 @@ function WindowContainer() {
   const [state, dispatch] = useContext(Context);
   const [focused, setIsFocused] = useState(false);
   const [documentUpdateTimeout, setDocUpdateTimeout] = useState(null);
+  const [nameUpdateTimeout, setNameUpdateTimeout] = useState(null);
   const { windows } = state;
 
   const closeWindow = (windowId, runId) => {
     if (runId) {
       terminateScript(runId);
     }
-    setFocused(windowId);
+    setFocused(false);
     dispatch({
       type: 'CLOSE_WINDOW',
       payload: windowId
@@ -41,7 +42,7 @@ function WindowContainer() {
     });
   };
 
-  const handleContentChange = (id, content, windowId) => {
+  const handleContentChange = (id, content) => {
     clearTimeout(documentUpdateTimeout);
     setDocUpdateTimeout(
       setTimeout(async () => {
@@ -52,11 +53,28 @@ function WindowContainer() {
           type: 'UPDATE_DOCUMENT',
           payload: {
             id,
-            content,
-            windowId
+            item: { content }
           }
         });
-      }, 2000)
+      }, 1500)
+    );
+  };
+
+  const handleNameChange = (id, name) => {
+    clearTimeout(nameUpdateTimeout);
+    setNameUpdateTimeout(
+      setTimeout(async () => {
+        await axios.put(`http://localhost:5555/documents/${id}`, {
+          name
+        });
+        dispatch({
+          type: 'UPDATE_DOCUMENT',
+          payload: {
+            id,
+            item: { name }
+          }
+        });
+      }, 1500)
     );
   };
 
@@ -76,10 +94,6 @@ function WindowContainer() {
 
   const terminateScript = (runId) => {
     ipcRenderer.send('terminate', { runId });
-  };
-
-  const handleNameChange = (documentId, value) => {
-    console.log(documentId, value);
   };
 
   return (
@@ -128,10 +142,10 @@ function WindowContainer() {
                 name={name}
                 closeWindow={() => closeWindow(windowId, runId)}
                 deleteDocument={() => deleteDocument(windowId)}
-                handleNameChange={(value) => handleNameChange(id, value)}
-                handleContentChange={(value) =>
-                  handleContentChange(id, value, windowId)
+                handleNameChange={(value) =>
+                  handleNameChange(id, value, windowId)
                 }
+                handleContentChange={(value) => handleContentChange(id, value)}
                 setFocused={() => setFocused(windowId)}
               />
             );

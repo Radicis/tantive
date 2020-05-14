@@ -11,15 +11,14 @@ const createNewScriptWindow = (script, count) => {
   };
 };
 
-const createNewEditorWindow = (document, count, isNew) => {
-  const { name, content, id } = document;
+const createNewEditorWindow = (id, documents, count, isNew) => {
+  const document = documents.find((d) => id === d.id);
+  const { name, content } = document;
   return {
     windowId: count,
     id,
     name,
     content,
-    type: 'MARKDOWN',
-    status: 'Rendering',
     isNew
   };
 };
@@ -43,7 +42,8 @@ const Reducer = (state, action) => {
           ...state.windows,
           {
             ...createNewEditorWindow(
-              state.documents.find((d) => d.id === action.payload.id),
+              action.payload.id,
+              state.documents,
               state.windows.length,
               action.payload.isNew
             )
@@ -62,16 +62,16 @@ const Reducer = (state, action) => {
           if (d.id === action.payload.id) {
             return {
               ...d,
-              content: action.payload.content
+              ...action.payload.item
             };
           }
           return d;
         }),
         windows: state.windows.map((w) => {
-          if (w.windowId === action.payload.windowId) {
+          if (w.id === action.payload.id) {
             return {
               ...w,
-              content: action.payload.content
+              ...action.payload.item
             };
           }
           return w;
@@ -83,14 +83,6 @@ const Reducer = (state, action) => {
         windows: [
           ...state.windows,
           { ...createNewScriptWindow(action.payload, state.windows.length) }
-        ]
-      };
-    case 'CREATE_EDITOR_WINDOW':
-      return {
-        ...state,
-        windows: [
-          ...state.windows,
-          { ...createNewEditorWindow(action.payload, state.windows.length) }
         ]
       };
     case 'SET_WINDOW_STATUS':

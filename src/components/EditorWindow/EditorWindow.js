@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -23,6 +23,11 @@ function EditorWindow({
   const [render, setRender] = useState(!isNew);
   const [localIsNew, setIsNew] = useState(isNew);
   const [localName, setLocalName] = useState(name);
+
+  useEffect(() => {
+    setLocalName(name);
+  }, [name, content, focused]);
+
   const toggleRender = () => {
     setIsNew(false);
     setRender(!render);
@@ -35,7 +40,7 @@ function EditorWindow({
   return (
     <div
       className={`window border-light flex flex-col text-mid ${
-        focused ? 'absolute' : ''
+        focused ? 'absolute w-full h-full' : ''
       }`}
     >
       <div className="p-2 flex flex-row bg-light">

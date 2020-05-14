@@ -13,7 +13,7 @@ class CRUD {
   }
 
   all() {
-    return this.JSONStore.get('scripts') || [];
+    return this.JSONStore.get(this.type) || [];
   }
 
   create(item) {

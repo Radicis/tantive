@@ -35,11 +35,11 @@ function SearchContainer() {
     ipcRenderer.send('init', { windowId: windows.length, name });
   };
 
-  const createEditorWindow = (name) => {
+  const createEditorWindow = (id) => {
     hideSearch();
     dispatch({
-      type: 'CREATE_EDITOR_WINDOW',
-      payload: name
+      type: 'CREATE_DOCUMENT_WINDOW',
+      payload: { id }
     });
   };
 
@@ -76,11 +76,11 @@ function SearchContainer() {
   };
 
   const renderDocument = (document) => {
-    const { name } = document;
+    const { name, id } = document;
     return (
       <div
         className="p-2 text-gray-100 cursor-pointer hover:bg-gray-800 flex flex-row"
-        onClick={() => createEditorWindow(name)}
+        onClick={() => createEditorWindow(id)}
       >
         <div className="flex flex-grow">{name}</div>{' '}
         <FontAwesomeIcon className="ml-4" icon={faStickyNote} color="#a9a9aa" />

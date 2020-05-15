@@ -59,7 +59,7 @@ function Create({ hideCreate, handleSubmit }) {
             type="file"
           />
 
-          <div>Args</div>
+          <div>Add Args</div>
         </div>
         <button
           disabled={!(name && filePath)}

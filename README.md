@@ -2,4 +2,14 @@
 Electron/React/express Markdown Editor and Js script runner with fuzzy searching and multi window
 
 
-![alt text](https://github.com/radicis/tantive/blob/master/images/tantive1.png?raw=true)
+![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive1.PNG?raw=true)
+
+![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive2.PNG?raw=true)
+
+![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive3.PNG?raw=true)
+
+![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive4.PNG?raw=true)
+
+![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive5.PNG?raw=true)
+
+![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive6.PNG?raw=true)

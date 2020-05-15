@@ -3,9 +3,10 @@ const fork = require('child_process').fork;
 const EventEmitter = require('events');
 
 class RunScript extends EventEmitter {
-  constructor(scriptName, scriptPath) {
+  constructor(scriptPath, windowId) {
     super();
     this.scriptPath = scriptPath;
+    this.windowId = windowId;
     this.runId = UUID();
   }
 

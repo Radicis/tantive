@@ -4,16 +4,15 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
-const RunScript = require('./server/models/runScript');
 const RunString = require('./server/models/runString');
 const server = require('./server');
+const { scripts } = require('./server/store');
+const RunningScripts = require('./server/models/runningScripts');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let dev = false;
-
-const runningScripts = {};
 
 if (
   process.env.NODE_ENV !== undefined &&
@@ -109,66 +108,39 @@ app.on('activate', () => {
   }
 });
 
+RunningScripts.on('init', (run) => {
+  const { windowId } = run;
+  // init event handlers
+  run.on('message', (data) => {
+    mainWindow.send('message', { data, windowId });
+  });
+  run.on('error', (data) => {
+    mainWindow.send('error', { data, windowId });
+  });
+  run.on('exit', (code) => {
+    mainWindow.send('exit', { code, windowId });
+  });
+});
+
 ipcMain.on('reset', () => {
-  for (const runId in runningScripts) {
-    try {
-      runningScripts[runId].terminate();
-    } catch (e) {
-      // fail silently
-    }
-    delete runningScripts[runId];
-  }
+  RunningScripts.terminateAll();
 });
 
 ipcMain.on('terminate', (e, { runId }) => {
-  try {
-    runningScripts[runId].terminate();
-  } catch (e) {
-    // fail silently
-  }
-});
-
-ipcMain.on('init', (e, { windowId, name, path, string }) => {
-  let newRun;
-  if (name && path) {
-    newRun = new RunScript(name, path);
-  } else if (string) {
-    newRun = new RunString(string);
-  } else {
-    mainWindow.send('error', { windowId });
-    return;
-  }
-  const { runId } = newRun;
-  runningScripts[runId] = newRun;
-  // init event handlers
-  newRun.on('message', (data) => {
-    mainWindow.send('message', { data, windowId });
-  });
-  newRun.on('error', (data) => {
-    mainWindow.send('error', { data, windowId });
-  });
-  newRun.on('exit', (code) => {
-    mainWindow.send('exit', { code, windowId });
-  });
-  mainWindow.send('ready', { windowId, runId });
+  RunningScripts.terminate(runId);
 });
 
 ipcMain.on('run', (e, { runId, windowId, args = [] }) => {
-  let run;
-  if (runId) {
-    run = runningScripts[runId];
-    if (run) {
-      run.run(args);
-      mainWindow.send('status', { windowId, status: 'Running' });
-    } else {
-      mainWindow.send('error', { windowId });
-    }
+  try {
+    RunningScripts.run(runId, args);
+    mainWindow.send('status', { windowId, status: 'Running' });
+  } catch (e) {
+    mainWindow.send('error', { windowId });
   }
 });
 
 ipcMain.on('close', (e, { runId }) => {
-  runningScripts[runId].terminate();
-  delete runningScripts[runId];
+  RunningScripts.terminate(runId);
 });
 
 server.listen(5555, () => {

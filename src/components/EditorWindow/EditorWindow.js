@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTimesCircle,
   faWindowClose,
   faRemoveFormat,
   faSquare,
@@ -87,7 +86,6 @@ function EditorWindow({
 EditorWindow.propTypes = {
   name: PropTypes.string,
   content: PropTypes.string,
-  windowId: PropTypes.number,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
   isNew: PropTypes.bool,

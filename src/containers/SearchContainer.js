@@ -9,6 +9,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ipcRenderer } from 'electron';
 import Fuse from 'fuse.js';
+import axios from 'axios';
+import { host, port } from '../config';
 
 function SearchContainer() {
   const [state, dispatch] = useContext(Context);
@@ -39,13 +41,19 @@ function SearchContainer() {
     e.stopPropagation();
   };
 
-  const createScriptWindow = (name) => {
-    hideSearch();
+  const createScriptWindow = async (id) => {
+    const { data } = await axios.post(`http://${host}:${port}/runs/${id}`, {
+      windowId: windows.length
+    });
+    const { runId } = data;
     dispatch({
       type: 'CREATE_SCRIPT_WINDOW',
-      payload: name
+      payload: {
+        id,
+        runId
+      }
     });
-    ipcRenderer.send('init', { windowId: windows.length, name });
+    hideSearch();
   };
 
   const createEditorWindow = (id) => {
@@ -76,8 +84,9 @@ function SearchContainer() {
     if (type === 'S') {
       return (
         <div
+          key={id}
           className="p-2 text-gray-100 cursor-pointer hover:bg-gray-800 flex flex-row"
-          onClick={() => createScriptWindow(name)}
+          onClick={() => createScriptWindow(id)}
         >
           <div className="flex flex-grow">{name}</div>{' '}
           <FontAwesomeIcon
@@ -89,7 +98,10 @@ function SearchContainer() {
       );
     }
     return (
-      <div className="p-2 text-gray-100 cursor-pointer hover:bg-gray-800 flex flex-row">
+      <div
+        key={id}
+        className="p-2 text-gray-100 cursor-pointer hover:bg-gray-800 flex flex-row"
+      >
         <div
           className="flex flex-grow flex-row items-center"
           onClick={() => createEditorWindow(id)}

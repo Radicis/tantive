@@ -8,16 +8,7 @@ function RendererBridgeContainer() {
 
   useEffect(() => {
     ipcRenderer.send('reset');
-    ipcRenderer.on('ready', (e, { windowId, status, runId }) => {
-      console.log(`Window: ${windowId} is ready`);
-      dispatch({
-        type: 'SET_WINDOW_RUN_ID',
-        payload: {
-          windowId,
-          runId
-        }
-      });
-    });
+
     ipcRenderer.on('status', (e, { windowId, status }) => {
       dispatch({
         type: 'SET_WINDOW_STATUS',

@@ -1,13 +1,13 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 import { Context } from '../store/Store';
 import { ipcRenderer } from 'electron';
+import { host, port } from '../config';
+import axios from 'axios';
+import Create from '../components/Create/Create';
 
 function CreateContainer() {
   const [state, dispatch] = useContext(Context);
-  const fileInputRef = useRef();
   const { showCreate, windows } = state;
-  const [filePath, setFilePath] = useState(null);
-  const [name, setName] = useState(null);
 
   const hideCreate = () => {
     dispatch({
@@ -15,78 +15,43 @@ function CreateContainer() {
     });
   };
 
-  const handleClick = (e) => {
-    e.stopPropagation();
-  };
-
-  const handleSubmit = () => {
-    if (name && filePath) {
+  const handleSubmit = async (name, filePath, args) => {
+    try {
+      const { data } = await axios.post(`http://${host}:${port}/scripts`, {
+        name,
+        path: filePath,
+        args
+      });
       dispatch({
         type: 'CREATE_SCRIPT',
+        payload: data
+      });
+      const { id } = data;
+      const { data: runData } = await axios.post(
+        `http://${host}:${port}/runs/${id}`,
+        {
+          windowId: windows.length
+        }
+      );
+      const { runId } = runData;
+      dispatch({
+        type: 'CREATE_SCRIPT_WINDOW',
         payload: {
-          name,
-          filePath
+          id,
+          runId,
+          status: 'Ready'
         }
       });
+      hideCreate();
+    } catch (e) {
+      alert(e);
     }
-    hideCreate();
-    dispatch({
-      type: 'CREATE_SCRIPT_WINDOW',
-      payload: name
-    });
-    ipcRenderer.send('init', { windowId: windows.length });
-  };
-
-  const handleNameChange = (e) => {
-    const { value } = e.target;
-    setName(value);
-  };
-
-  const setFile = (file) => {
-    const { path } = file;
-    setFilePath(path);
   };
 
   return (
     <React.Fragment>
       {showCreate ? (
-        <div
-          className="search-container flex w-full z-10 h-full absolute items-start justify-center"
-          onClick={() => hideCreate()}
-        >
-          <form
-            onClick={handleClick}
-            onSubmit={handleSubmit}
-            className="search-form rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid flex flex-col p-4 mt-12"
-          >
-            <div className="text-center text-lg font-semi-bold">
-              Create New Script
-            </div>
-            <div className="flex flex-col">
-              <input
-                placeholder="Script Name"
-                onChange={handleNameChange}
-                id="name"
-                name="name"
-                className="bg-light flex flex-grow outline-none p-2 my-2"
-              />
-              <input
-                ref={fileInputRef}
-                name="file"
-                id="file"
-                onChange={() => setFile(fileInputRef.current.files[0])}
-                placeholder="Script Path"
-                className="flex flex-grow outline-none p-2 mb-2"
-                type="file"
-              />
-
-              <div>Args</div>
-            </div>
-            <button type="submit" className="outline-none">
-              OK
-            </button>
-          </form>
-        </div>
+        <Create handleSubmit={handleSubmit} hideCreate={hideCreate} />
       ) : (
         ''
       )}

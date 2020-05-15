@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Context } from '../store/Store';
-import WindowContainer from './WindowContainer';
+import WindowsContainer from './WindowsContainer';
 import SidebarContainer from './SidebarContainer';
 import SearchContainer from './SearchContainer';
 import CreateContainer from './CreateContainer';
@@ -18,7 +18,7 @@ function MainContainer() {
           <SearchContainer />
           <CreateContainer />
           <SidebarContainer />
-          <WindowContainer />
+          <WindowsContainer />
         </div>
       )}
     </React.Fragment>

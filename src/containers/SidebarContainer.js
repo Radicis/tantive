@@ -10,12 +10,14 @@ import {
 import axios from 'axios';
 import { ipcRenderer } from 'electron';
 
+import { host, port } from '../config';
+
 function SidebarContainer() {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(Context);
 
   const createDocument = async () => {
-    const { data } = await axios.post('http://localhost:5555/documents', {
+    const { data } = await axios.post(`http://${host}:${port}/documents`, {
       content: '',
       name: 'UNTITLED'
     });
@@ -30,12 +32,6 @@ function SidebarContainer() {
         id,
         isNew: true
       }
-    });
-  };
-
-  const createConsoleWindow = () => {
-    dispatch({
-      type: 'CREATE_COSOLE_WINDOW'
     });
   };
 
@@ -59,12 +55,6 @@ function SidebarContainer() {
       <div
         className="transition duration-200 ease-in-out rounded-lg shadow flex p-2 cursor-pointer bg-red-700 hover:bg-red-600 mb-4 justify-center"
         onClick={createScript}
-      >
-        <FontAwesomeIcon icon={faCodeBranch} color="#fefefe" size="lg" />
-      </div>
-      <div
-        className="transition duration-200 ease-in-out rounded-lg shadow flex p-2 cursor-pointer bg-red-700 hover:bg-red-600 mb-4 justify-center"
-        onClick={createConsoleWindow}
       >
         <FontAwesomeIcon icon={faBox} color="#fefefe" size="lg" />
       </div>

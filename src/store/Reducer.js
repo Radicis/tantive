@@ -1,7 +1,9 @@
-const createNewScriptWindow = (script, count) => {
+const createNewScriptWindow = ({ id, runId }, scripts, windowId) => {
+  const script = scripts.find((s) => id === s.id);
   const { name, params } = script;
   return {
-    windowId: count,
+    windowId,
+    runId,
     params,
     name,
     type: 'SCRIPT',
@@ -11,11 +13,11 @@ const createNewScriptWindow = (script, count) => {
   };
 };
 
-const createNewEditorWindow = (id, documents, count, isNew) => {
+const createNewDocumentWindow = (id, documents, windowId, isNew) => {
   const document = documents.find((d) => id === d.id);
   const { name, content } = document;
   return {
-    windowId: count,
+    windowId,
     id,
     name,
     content,
@@ -41,7 +43,7 @@ const Reducer = (state, action) => {
         windows: [
           ...state.windows,
           {
-            ...createNewEditorWindow(
+            ...createNewDocumentWindow(
               action.payload.id,
               state.documents,
               state.windows.length,
@@ -82,8 +84,19 @@ const Reducer = (state, action) => {
         ...state,
         windows: [
           ...state.windows,
-          { ...createNewScriptWindow(action.payload, state.windows.length) }
+          {
+            ...createNewScriptWindow(
+              action.payload,
+              state.scripts,
+              state.windows.length
+            )
+          }
         ]
+      };
+    case 'CREATE_SCRIPT':
+      return {
+        ...state,
+        documents: [...state.scripts, action.payload]
       };
     case 'SET_WINDOW_STATUS':
       return {

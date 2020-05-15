@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTimesCircle,
   faStopCircle,
   faChevronCircleRight,
   faWindowClose,
@@ -14,7 +13,6 @@ import ScriptConfig from '../ScriptConfig/ScriptConfig';
 function ScriptWindow({
   logLines,
   name,
-  params,
   closeWindow,
   runScript,
   terminateScript,
@@ -25,6 +23,7 @@ function ScriptWindow({
 }) {
   const messagesEndRef = useRef(null);
   const [showConfig, setShowConfig] = useState(false);
+  const [params, setParams] = useState({});
 
   const scrollToBottom = () => {
     try {
@@ -69,10 +68,7 @@ function ScriptWindow({
         <div className="cursor-pointer mr-2" onClick={setFocused}>
           <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
         </div>
-        <div
-          className="cursor-pointer mr-2"
-          onClick={() => terminateScript(window)}
-        >
+        <div className="cursor-pointer mr-2" onClick={terminateScript}>
           <FontAwesomeIcon icon={faStopCircle} color="#c53030" size="lg" />
         </div>
         <div className="cursor-pointer mr-2" onClick={runScript}>
@@ -107,8 +103,6 @@ ScriptWindow.propTypes = {
   name: PropTypes.string,
   status: PropTypes.string,
   logLines: PropTypes.array,
-  params: PropTypes.array,
-  windowId: PropTypes.number,
   closeWindow: PropTypes.func,
   runScript: PropTypes.func,
   focused: PropTypes.bool,

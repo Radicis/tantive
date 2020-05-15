@@ -7,7 +7,7 @@ import {
   faStickyNote,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
-import { ipcRenderer } from 'electron';
+import { animated, useTransition, config } from 'react-spring';
 import Fuse from 'fuse.js';
 import axios from 'axios';
 import { host, port } from '../config';
@@ -42,18 +42,25 @@ function SearchContainer() {
   };
 
   const createScriptWindow = async (id) => {
-    const { data } = await axios.post(`http://${host}:${port}/runs/${id}`, {
-      windowId: windows.length
-    });
-    const { runId } = data;
-    dispatch({
-      type: 'CREATE_SCRIPT_WINDOW',
-      payload: {
-        id,
-        runId
-      }
-    });
-    hideSearch();
+    try {
+      const { data } = await axios.post(`http://${host}:${port}/runs/${id}`, {
+        windowId: windows.length
+      });
+      const { runId } = data;
+      dispatch({
+        type: 'CREATE_SCRIPT_WINDOW',
+        payload: {
+          id,
+          runId
+        }
+      });
+      hideSearch();
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
+    }
   };
 
   const createEditorWindow = (id) => {
@@ -122,48 +129,66 @@ function SearchContainer() {
     );
   };
 
+  const transition = useTransition(showSearch, null, {
+    config: config.stiff,
+    from: {
+      transform: 'translate3d(0,-50px,0)',
+      opacity: 0,
+      position: 'fixed'
+    },
+    enter: { transform: 'translate3d(0,0,0)', opacity: 1 },
+    leave: {
+      transform: 'translate3d(0,-50px,0)',
+      opacity: 0,
+      position: 'fixed'
+    }
+  });
+
   return (
     <React.Fragment>
-      {showSearch ? (
-        <div
-          className="search-container flex w-full z-10 h-full absolute items-start justify-center"
-          onClick={() => hideSearch()}
-        >
-          <form
-            onClick={handleClick}
-            className="search-form overflow-hidden rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid mt-12"
-          >
-            <div className="text-xl flex flex-row p-4">
-              <FontAwesomeIcon
-                className="mr-4 hidden md:inline"
-                icon={faSearch}
-                color="#a9a9aa"
-                size="lg"
-              />
-              <input
-                className="bg-light flex flex-grow outline-none"
-                placeholder="Script Search"
-                onChange={filter}
-              />
-            </div>
-            {filtered ? (
-              filtered.length > 0 ? (
-                <div
-                  className="text-xl flex flex-col flex-grow overflow-auto"
-                  style={{ maxHeight: '75vh' }}
-                >
-                  {filtered.map(renderItem)}
+      {transition.map(
+        ({ item, key, props }) =>
+          item && (
+            <animated.div
+              key={key}
+              style={props}
+              className="search-container modal flex w-full z-10 h-full absolute items-start justify-center"
+              onClick={() => hideSearch()}
+            >
+              <form
+                onClick={handleClick}
+                className="search-form overflow-hidden z-20 rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid mt-12"
+              >
+                <div className="text-xl flex flex-row p-4">
+                  <FontAwesomeIcon
+                    className="mr-4 hidden md:inline"
+                    icon={faSearch}
+                    color="#a9a9aa"
+                    size="lg"
+                  />
+                  <input
+                    className="bg-light flex flex-grow outline-none"
+                    placeholder="Script Search"
+                    onChange={filter}
+                  />
                 </div>
-              ) : (
-                <div className="text-center my-4 px-4">No Results</div>
-              )
-            ) : (
-              ''
-            )}
-          </form>
-        </div>
-      ) : (
-        ''
+                {filtered ? (
+                  filtered.length > 0 ? (
+                    <div
+                      className="text-xl flex flex-col flex-grow overflow-auto"
+                      style={{ maxHeight: '75vh' }}
+                    >
+                      {filtered.map(renderItem)}
+                    </div>
+                  ) : (
+                    <div className="text-center my-4 px-4">No Results</div>
+                  )
+                ) : (
+                  ''
+                )}
+              </form>
+            </animated.div>
+          )
       )}
     </React.Fragment>
   );

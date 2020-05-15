@@ -35,7 +35,10 @@ function SetupContainer() {
         payload: false
       });
     } catch (e) {
-      console.log(e);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
     }
   };
 

@@ -8,7 +8,6 @@ import {
   faBox
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { ipcRenderer } from 'electron';
 
 import { host, port } from '../config';
 
@@ -17,22 +16,29 @@ function SidebarContainer() {
   const [state, dispatch] = useContext(Context);
 
   const createDocument = async () => {
-    const { data } = await axios.post(`http://${host}:${port}/documents`, {
-      content: '',
-      name: 'UNTITLED'
-    });
-    dispatch({
-      type: 'CREATE_DOCUMENT',
-      payload: data
-    });
-    const { id } = data;
-    dispatch({
-      type: 'CREATE_DOCUMENT_WINDOW',
-      payload: {
-        id,
-        isNew: true
-      }
-    });
+    try {
+      const { data } = await axios.post(`http://${host}:${port}/documents`, {
+        content: '',
+        name: 'UNTITLED'
+      });
+      dispatch({
+        type: 'CREATE_DOCUMENT',
+        payload: data
+      });
+      const { id } = data;
+      dispatch({
+        type: 'CREATE_DOCUMENT_WINDOW',
+        payload: {
+          id,
+          isNew: true
+        }
+      });
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
+    }
   };
 
   const createScript = () => {

@@ -165,9 +165,15 @@ const Reducer = (state, action) => {
         ...state,
         showSearch: false
       };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.payload
+      };
     case 'SET_LOADING':
       return {
         ...state,
+        error: null,
         loading: action.payload
       };
     default:

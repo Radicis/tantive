@@ -43,16 +43,23 @@ function ScriptWindowContainer({
     clearTimeout(argsUpdateTimeout);
     setArgsUpdateTimeout(
       setTimeout(async () => {
-        await axios.put(`http://localhost:5555/scripts/${id}`, {
-          args
-        });
-        dispatch({
-          type: 'UPDATE_SCRIPT',
-          payload: {
-            id,
-            item: { args }
-          }
-        });
+        try {
+          await axios.put(`http://localhost:5555/scripts/${id}`, {
+            args
+          });
+          dispatch({
+            type: 'UPDATE_SCRIPT',
+            payload: {
+              id,
+              item: { args }
+            }
+          });
+        } catch (e) {
+          dispatch({
+            type: 'SET_ERROR',
+            payload: e
+          });
+        }
       }, 1500)
     );
   };
@@ -61,16 +68,23 @@ function ScriptWindowContainer({
     clearTimeout(nameUpdateTimeout);
     setNameUpdateTimeout(
       setTimeout(async () => {
-        await axios.put(`http://localhost:5555/scripts/${id}`, {
-          name
-        });
-        dispatch({
-          type: 'UPDATE_SCRIPT',
-          payload: {
-            id,
-            item: { name }
-          }
-        });
+        try {
+          await axios.put(`http://localhost:5555/scripts/${id}`, {
+            name
+          });
+          dispatch({
+            type: 'UPDATE_SCRIPT',
+            payload: {
+              id,
+              item: { name }
+            }
+          });
+        } catch (e) {
+          dispatch({
+            type: 'SET_ERROR',
+            payload: e
+          });
+        }
       }, 1500)
     );
   };

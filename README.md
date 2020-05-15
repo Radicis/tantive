@@ -1,6 +1,17 @@
 # tantive
 Electron/React/express Markdown Editor and Js script runner with fuzzy searching and multi window
 
+## TODO
+
+* Parameter CRUD for scripts
+* Arguments setting for scripts
+* Syntax highlighting
+* delete functionality
+* console window
+* paste in script run (string input)
+* export
+* save logs
+
 
 ![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive1.PNG?raw=true)
 

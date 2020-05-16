@@ -8,7 +8,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Fuse from 'fuse.js';
 import PropTypes from 'prop-types';
-import ScriptWindowContainer from '../../containers/ScriptWindowContainer';
 
 function Search({
   scripts = [],
@@ -96,7 +95,7 @@ function Search({
   return (
     <form
       onClick={handleClick}
-      className="search-form overflow-hidden z-20 rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid mt-12"
+      className="modal-content overflow-hidden z-20 rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid mt-12"
     >
       <div className="text-xl flex flex-row p-4">
         <FontAwesomeIcon

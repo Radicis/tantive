@@ -9,20 +9,9 @@ import { animated, config, useTransition, useSpring } from 'react-spring';
 
 function MainContainer() {
   const [state] = useContext(Context);
-  const { loading, error } = state;
+  const { loading } = state;
 
   const transition = useTransition(loading, null, {
-    config: config.gentle,
-    from: {
-      opacity: 1
-    },
-    enter: { opacity: 1 },
-    leave: {
-      opacity: 0
-    }
-  });
-
-  const errorTransition = useTransition(error, null, {
     config: config.gentle,
     from: {
       opacity: 1
@@ -40,18 +29,6 @@ function MainContainer() {
 
   return (
     <React.Fragment>
-      {errorTransition.map(
-        ({ item, key, props }) =>
-          item && (
-            <animated.div
-              key={key}
-              style={props}
-              className="text-mid fixed text-xl font-semi-bol opacity-50 w-full h-full flex justify-center items-center flex flex-col pointer-events-none"
-            >
-              <Error error={error} />
-            </animated.div>
-          )
-      )}
       {transition.map(
         ({ item, key, props }) =>
           item && (
@@ -68,8 +45,6 @@ function MainContainer() {
         style={mainTransition}
         className="opacity-0 relative main-grid grid grid-flow-col w-full h-full bg-dark"
       >
-        <SearchContainer />
-        <CreateContainer />
         <SidebarContainer />
         <WindowsContainer />
       </animated.div>

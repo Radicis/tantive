@@ -165,6 +165,16 @@ const Reducer = (state, action) => {
         ...state,
         showSearch: false
       };
+    case 'SHOW_HELP':
+      return {
+        ...state,
+        showHelp: true
+      };
+    case 'HIDE_HELP':
+      return {
+        ...state,
+        showHelp: false
+      };
     case 'SET_ERROR':
       return {
         ...state,

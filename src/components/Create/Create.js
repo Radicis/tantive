@@ -30,7 +30,7 @@ function Create({ hideCreate, handleSubmit }) {
 
   return (
     <div
-      className="search-container flex w-full z-10 h-full absolute items-start justify-center"
+      className="flex w-full z-10 h-full absolute items-start justify-center"
       onClick={hideCreate}
     >
       <form

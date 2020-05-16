@@ -47,11 +47,18 @@ function SidebarContainer() {
     });
   };
 
+  const showHelp = () => {
+    dispatch({
+      type: 'SHOW_HELP'
+    });
+  };
+
   return (
     <Sidebar
       createScript={createScript}
       createDocument={createDocument}
       find={find}
+      showHelp={showHelp}
     />
   );
 }

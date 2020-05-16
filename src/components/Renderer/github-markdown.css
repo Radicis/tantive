@@ -1,9 +1,30 @@
 .markdown-body {
   color: #a9a9aa !important;
+  width: 100%;
 }
 
-ol, ul {
-  list-style: auto;
+.markdown-body ol {
+  display: block;
+  list-style-type: decimal;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 40px;
+}
+
+.markdown-body ul {
+  display: block;
+  list-style-type: disc;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 40px;
+}
+
+.markdown-body ol li, .markdown-body ul li {
+  display: list-item;
 }
 
 .markdown-body .octicon {

@@ -77,7 +77,7 @@ function SearchContainer() {
             <animated.div
               key={key}
               style={props}
-              className="search-container modal flex w-full z-10 h-full absolute items-start justify-center"
+              className="modal flex w-full z-10 h-full absolute items-start justify-center"
               onClick={() => hideSearch()}
             >
               <Search

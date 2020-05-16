@@ -4,12 +4,13 @@ import {
   faSearch,
   faCodeBranch,
   faRemoveFormat,
-  faBox
+  faBox,
+  faQuestion
 } from '@fortawesome/free-solid-svg-icons';
 
 import PropTypes from 'prop-types';
 
-function Sidebar({ createScript, createDocument, find }) {
+function Sidebar({ createScript, createDocument, find, showHelp }) {
   return (
     <div className="bg-light flex flex-col flex-grow overflow-auto text-mid items-stretch justify-start p-4">
       <div className="flex p-2 opacity-25 mb-4 justify-center">
@@ -33,6 +34,12 @@ function Sidebar({ createScript, createDocument, find }) {
       >
         <FontAwesomeIcon icon={faSearch} color="#a9a9aa" size="lg" />
       </div>
+      <div
+        className="transition duration-200 ease-in-out rounded-lg p-2 flex cursor-pointer justify-center hover:bg-dark"
+        onClick={showHelp}
+      >
+        <FontAwesomeIcon icon={faQuestion} color="#a9a9aa" />
+      </div>
     </div>
   );
 }
@@ -40,7 +47,8 @@ function Sidebar({ createScript, createDocument, find }) {
 Sidebar.propTypes = {
   createScript: PropTypes.array,
   createDocument: PropTypes.func,
-  find: PropTypes.func
+  find: PropTypes.func,
+  showHelp: PropTypes.func
 };
 
 export default Sidebar;

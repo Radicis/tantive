@@ -66,11 +66,6 @@ input {
   @apply border-r;
 }
 
-/*.window:nth-child(n+2) {*/
-/*  @apply border-l;*/
-/*}*/
-
-
 ::-webkit-scrollbar {
   width: 11px;
   scrollbar-width: thin;

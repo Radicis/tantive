@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 import { Context } from '../store/Store';
 import WindowsContainer from './WindowsContainer';
 import SidebarContainer from './SidebarContainer';
-import SearchContainer from './SearchContainer';
-import CreateContainer from './CreateContainer';
 import Loading from '../components/Loading/Loading';
 import { animated, config, useTransition, useSpring } from 'react-spring';
 

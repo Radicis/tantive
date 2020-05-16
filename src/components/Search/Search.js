@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSearch,
-  faCodeBranch,
-  faStickyNote,
-  faWindowClose
-} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Fuse from 'fuse.js';
 import PropTypes from 'prop-types';
+import SearchItem from '../SearchItem/SearchItem';
 
 function Search({
   scripts = [],
   documents = [],
   createScriptWindow,
-  createEditorWindow
+  createEditorWindow,
+  deleteDocument,
+  deleteScript
 }) {
   const [filtered, setFiltered] = useState(null);
   const [fuse, setFuse] = useState(null);
@@ -51,51 +49,24 @@ function Search({
 
   const renderItem = (item) => {
     const { name, type, id } = item;
-    if (type === 'S') {
-      return (
-        <div
-          key={id}
-          className="p-2 text-gray-100 cursor-pointer hover:bg-gray-800 flex flex-row"
-          onClick={() => createScriptWindow(id)}
-        >
-          <div className="flex flex-grow">{name}</div>{' '}
-          <FontAwesomeIcon
-            className="ml-4"
-            icon={faCodeBranch}
-            color="#a9a9aa"
-          />
-        </div>
-      );
-    }
     return (
-      <div
+      <SearchItem
         key={id}
-        className="p-2 text-gray-100 cursor-pointer hover:bg-gray-800 flex flex-row"
-      >
-        <div
-          className="flex flex-grow flex-row items-center"
-          onClick={() => createEditorWindow(id)}
-        >
-          <FontAwesomeIcon
-            className="mr-4"
-            icon={faStickyNote}
-            color="#a9a9aa"
-          />
-          <div className="flex flex-grow">{name}</div>
-        </div>
-        <FontAwesomeIcon
-          className="ml-4"
-          icon={faWindowClose}
-          color="#a9a9aa"
-        />
-      </div>
+        name={name}
+        type={type}
+        deleteDocument={() => deleteDocument(id)}
+        deleteScript={() => deleteScript(id)}
+        handleClick={() =>
+          type ? createScriptWindow(id) : createEditorWindow(id)
+        }
+      />
     );
   };
 
   return (
     <form
       onClick={handleClick}
-      className="modal-content overflow-hidden z-20 rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid mt-12"
+      className="modal-content overflow-hidden z-20 rounded-lg bg-light shadow-xl shadow-xl relative border border-mid text-mid mt-12"
     >
       <div className="text-xl flex flex-row p-4">
         <FontAwesomeIcon
@@ -106,14 +77,14 @@ function Search({
         />
         <input
           className="bg-light flex flex-grow outline-none"
-          placeholder="Script Search"
+          placeholder="Search..."
           onChange={filter}
         />
       </div>
       {filtered ? (
         filtered.length > 0 ? (
           <div
-            className="text-xl flex flex-col flex-grow overflow-auto"
+            className="text-xl pb-6 flex flex-col flex-grow overflow-auto"
             style={{ maxHeight: '75vh' }}
           >
             {filtered.map(renderItem)}
@@ -132,6 +103,8 @@ Search.propTypes = {
   scripts: PropTypes.array,
   documents: PropTypes.array,
   createScriptWindow: PropTypes.func,
+  deleteDocument: PropTypes.func,
+  deleteScript: PropTypes.func,
   createEditorWindow: PropTypes.func
 };
 

@@ -14,13 +14,14 @@ function ScriptWindowContainer({
   params,
   status,
   windowId,
+  canExpand,
   runId,
   id
 }) {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(Context);
   const [nameUpdateTimeout, setNameUpdateTimeout] = useState(null);
-  const [argsUpdateTimeout, setArgsUpdateTimeout] = useState(null);
+  const [paramsUpdateTimeout, setParamsUpdateTimeout] = useState(null);
   const [args, setArgs] = useState([]);
 
   const closeAndTerminateWindow = () => {
@@ -39,13 +40,13 @@ function ScriptWindowContainer({
     });
   };
 
-  const handleArgsChange = (args) => {
-    clearTimeout(argsUpdateTimeout);
-    setArgsUpdateTimeout(
+  const handleParamsChange = (params) => {
+    clearTimeout(paramsUpdateTimeout);
+    setParamsUpdateTimeout(
       setTimeout(async () => {
         try {
           await axios.put(`http://localhost:5555/scripts/${id}`, {
-            args
+            params
           });
           dispatch({
             type: 'UPDATE_SCRIPT',
@@ -105,7 +106,9 @@ function ScriptWindowContainer({
       args={args}
       params={params}
       status={status}
+      canExpand={canExpand}
       closeWindow={closeAndTerminateWindow}
+      handleNameChange={handleNameChange}
       terminateScript={() => terminateScript()}
       runScript={() => runScript()}
       setFocused={setFocused}
@@ -124,6 +127,7 @@ ScriptWindowContainer.propTypes = {
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
   isNew: PropTypes.bool,
+  canExpand: PropTypes.bool,
   setFocused: PropTypes.func,
   logLines: PropTypes.array,
   params: PropTypes.array

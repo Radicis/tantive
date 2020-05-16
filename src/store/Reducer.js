@@ -7,7 +7,7 @@ const createNewScriptWindow = ({ id, runId }, scripts, windowId) => {
     params,
     name,
     type: 'SCRIPT',
-    status: 'Creating...',
+    status: 'Ready',
     logLines: [],
     args: []
   };
@@ -21,7 +21,8 @@ const createNewDocumentWindow = (id, documents, windowId, isNew) => {
     id,
     name,
     content,
-    isNew
+    isNew,
+    status: 'New Document'
   };
 };
 

@@ -18,6 +18,8 @@ function EditorWindow({
   setFocused,
   focused,
   isNew,
+  status,
+  canExpand,
   handleNameChange
 }) {
   const [render, setRender] = useState(!isNew);
@@ -62,9 +64,13 @@ function EditorWindow({
         <div className="cursor-pointer mr-2" onClick={toggleRender}>
           <FontAwesomeIcon icon={faRemoveFormat} color="#c53030" size="lg" />
         </div>
-        <div className="cursor-pointer mr-2" onClick={setFocused}>
-          <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
-        </div>
+        {canExpand ? (
+          <div className="cursor-pointer mr-2" onClick={setFocused}>
+            <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
+          </div>
+        ) : (
+          ''
+        )}
         <div className="cursor-pointer" onClick={closeWindow}>
           <FontAwesomeIcon icon={faWindowClose} color="#c53030" size="lg" />
         </div>
@@ -79,6 +85,7 @@ function EditorWindow({
           <Editor handleContentChange={handleContentChange} content={content} />
         )}
       </div>
+      <div className="bg-light text-right text-xs p-2">{status}</div>
     </div>
   );
 }
@@ -86,9 +93,11 @@ function EditorWindow({
 EditorWindow.propTypes = {
   name: PropTypes.string,
   content: PropTypes.string,
+  status: PropTypes.string,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
   isNew: PropTypes.bool,
+  canExpand: PropTypes.bool,
   handleContentChange: PropTypes.func,
   handleNameChange: PropTypes.func,
   setFocused: PropTypes.func

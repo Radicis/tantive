@@ -1,12 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Context } from '../store/Store';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSearch,
-  faCodeBranch,
-  faStickyNote,
-  faWindowClose
-} from '@fortawesome/free-solid-svg-icons';
 import { animated, useTransition, config } from 'react-spring';
 import axios from 'axios';
 import { host, port } from '../config';
@@ -14,11 +7,9 @@ import Search from '../components/Search/Search';
 
 function SearchContainer() {
   const [state, dispatch] = useContext(Context);
-  const [filtered, setFiltered] = useState(null);
   const { scripts, documents, windows, showSearch } = state;
 
   const hideSearch = () => {
-    setFiltered(null);
     dispatch({
       type: 'HIDE_SEARCH'
     });
@@ -54,6 +45,36 @@ function SearchContainer() {
     });
   };
 
+  const deleteDocument = async (id) => {
+    try {
+      await axios.delete(`http://${host}:${port}/documents/${id}`);
+      dispatch({
+        type: 'DELETE_ITEM',
+        payload: id
+      });
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
+    }
+  };
+
+  const deleteScript = async (id) => {
+    try {
+      await axios.delete(`http://${host}:${port}/scripts/${id}`);
+      dispatch({
+        type: 'DELETE_ITEM',
+        payload: id
+      });
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
+    }
+  };
+
   const transition = useTransition(showSearch, null, {
     config: config.stiff,
     from: {
@@ -83,6 +104,8 @@ function SearchContainer() {
               <Search
                 scripts={scripts}
                 documents={documents}
+                deleteScript={deleteScript}
+                deleteDocument={deleteDocument}
                 createEditorWindow={createEditorWindow}
                 createScriptWindow={createScriptWindow}
               />

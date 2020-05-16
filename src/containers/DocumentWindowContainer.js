@@ -8,9 +8,12 @@ function DocumentWindowContainer({
   id,
   name,
   closeWindow,
+  windowId,
   content,
   setFocused,
   focused,
+  canExpand,
+  status,
   isNew
 }) {
   // eslint-disable-next-line no-unused-vars
@@ -30,6 +33,13 @@ function DocumentWindowContainer({
     clearTimeout(updateTimeout);
     setUpdateTimeout(
       setTimeout(async () => {
+        dispatch({
+          type: 'SET_WINDOW_STATUS',
+          payload: {
+            windowId,
+            status: 'Saving...'
+          }
+        });
         await axios.put(`http://localhost:5555/documents/${id}`, {
           content
         });
@@ -40,6 +50,13 @@ function DocumentWindowContainer({
             item: { content }
           }
         });
+        dispatch({
+          type: 'SET_WINDOW_STATUS',
+          payload: {
+            windowId,
+            status: 'Saved'
+          }
+        });
       }, 1500)
     );
   };
@@ -48,6 +65,13 @@ function DocumentWindowContainer({
     clearTimeout(nameUpdateTimeout);
     setNameUpdateTimeout(
       setTimeout(async () => {
+        dispatch({
+          type: 'SET_WINDOW_STATUS',
+          payload: {
+            windowId,
+            status: 'Saving...'
+          }
+        });
         await axios.put(`http://localhost:5555/documents/${id}`, {
           name
         });
@@ -56,6 +80,13 @@ function DocumentWindowContainer({
           payload: {
             id,
             item: { name }
+          }
+        });
+        dispatch({
+          type: 'SET_WINDOW_STATUS',
+          payload: {
+            windowId,
+            status: 'Saved.'
           }
         });
       }, 1500)
@@ -68,7 +99,9 @@ function DocumentWindowContainer({
       content={content}
       isNew={isNew}
       name={name}
+      status={status}
       closeWindow={closeWindow}
+      canExpand={canExpand}
       handleContentChange={handleContentChange}
       handleNameChange={handleNameChange}
       setFocused={setFocused}
@@ -80,8 +113,11 @@ DocumentWindowContainer.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   content: PropTypes.string,
+  windowId: PropTypes.string,
+  status: PropTypes.string,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
+  canExpand: PropTypes.bool,
   isNew: PropTypes.bool,
   setFocused: PropTypes.func
 };

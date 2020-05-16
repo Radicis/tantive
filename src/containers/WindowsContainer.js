@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Context } from '../store/Store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCodeBranch } from '@fortawesome/free-solid-svg-icons';
+import { faFeatherAlt } from '@fortawesome/free-solid-svg-icons';
 import DocumentWindowContainer from './DocumentWindowContainer';
 import ScriptWindowContainer from './ScriptWindowContainer';
 
@@ -57,6 +57,7 @@ function WindowsContainer() {
                   args={args}
                   status={status}
                   params={params}
+                  canExpand={windows.length > 1}
                   closeWindow={() => closeWindow(windowId, runId)}
                   setFocused={() => setFocused(windowId)}
                 />
@@ -69,9 +70,10 @@ function WindowsContainer() {
                 windowId={windowId}
                 focused={focused === windowId}
                 content={content}
-                logLines={logLines}
+                status={status}
                 isNew={isNew}
                 name={name}
+                canExpand={windows.length > 1}
                 closeWindow={() => closeWindow(windowId)}
                 setFocused={() => setFocused(windowId)}
               />
@@ -79,9 +81,9 @@ function WindowsContainer() {
           })}
         </div>
       ) : (
-        <div className="w-full h-full flex items-center flex-col justify-center opacity-25">
-          <div className="font-light text-3xl text-gray-100 mb-4">Tantive</div>
-          <FontAwesomeIcon icon={faCodeBranch} color="#fefefe" size="2x" />
+        <div className="w-full h-full flex items-center flex-col justify-center opacity-25 font-hairline">
+          <div className="text-3xl text-gray-100 mb-4">Tantive</div>
+          <FontAwesomeIcon icon={faFeatherAlt} color="#fefefe" size="lg" />
         </div>
       )}
     </React.Fragment>

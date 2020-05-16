@@ -6,7 +6,8 @@ import {
   faChevronCircleRight,
   faWindowClose,
   faCog,
-  faSquare
+  faSquare,
+  faEdit
 } from '@fortawesome/free-solid-svg-icons';
 import ScriptConfig from '../ScriptConfig/ScriptConfig';
 
@@ -16,13 +17,16 @@ function ScriptWindow({
   closeWindow,
   runScript,
   terminateScript,
+  handleNameChange,
   setArgs,
   status,
   setFocused,
+  canExpand,
   focused
 }) {
   const messagesEndRef = useRef(null);
   const [showConfig, setShowConfig] = useState(false);
+  const [localName, setLocalName] = useState(name);
   const [params, setParams] = useState({});
 
   const scrollToBottom = () => {
@@ -33,11 +37,17 @@ function ScriptWindow({
     }
   };
 
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setLocalName(value);
+    handleNameChange(value);
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [logLines, status]);
 
-  const toggleConfig = () => {
+  const toggleEdit = () => {
     setShowConfig(!showConfig);
   };
 
@@ -61,13 +71,31 @@ function ScriptWindow({
       }`}
     >
       <div className="p-2 flex flex-row bg-light">
-        <div className="flex flex-grow">{name}</div>
-        <div className="cursor-pointer mr-2" onClick={toggleConfig}>
+        <div className="flex flex-grow">
+          {!showConfig ? (
+            localName
+          ) : (
+            <div className="flex flex-row items-center">
+              <input
+                className="bg-light text-mid mr-2 outline-none"
+                value={localName}
+                onChange={handleChange}
+                placeholder="Type Name.."
+              />
+              <FontAwesomeIcon icon={faEdit} color="#c53030" />
+            </div>
+          )}
+        </div>
+        <div className="cursor-pointer mr-2" onClick={toggleEdit}>
           <FontAwesomeIcon icon={faCog} color="#c53030" size="lg" />
         </div>
-        <div className="cursor-pointer mr-2" onClick={setFocused}>
-          <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
-        </div>
+        {canExpand ? (
+          <div className="cursor-pointer mr-2" onClick={setFocused}>
+            <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
+          </div>
+        ) : (
+          ''
+        )}
         <div className="cursor-pointer mr-2" onClick={terminateScript}>
           <FontAwesomeIcon icon={faStopCircle} color="#c53030" size="lg" />
         </div>
@@ -106,7 +134,9 @@ ScriptWindow.propTypes = {
   closeWindow: PropTypes.func,
   runScript: PropTypes.func,
   focused: PropTypes.bool,
+  canExpand: PropTypes.bool,
   terminateScript: PropTypes.func,
+  handleNameChange: PropTypes.func,
   setArgs: PropTypes.func,
   setFocused: PropTypes.func
 };

@@ -8,11 +8,17 @@ function Editor({ handleContentChange, content }) {
     setLocalContent(value);
     handleContentChange(value);
   };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+    }
+  };
   return (
     <textarea
       className="resize-none font-mono bg-dark w-full h-full outline-none"
       placeholder="Type Here.."
       value={localContent}
+      onKeyDown={handleKeyDown}
       onChange={handleChange}
     />
   );

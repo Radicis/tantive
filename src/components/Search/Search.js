@@ -90,6 +90,7 @@ function Search({
           size="lg"
         />
         <input
+          autoFocus
           className="bg-light flex flex-grow outline-none"
           placeholder="Search..."
           onChange={handleChange}

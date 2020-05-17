@@ -5,7 +5,7 @@ function Create({ hideCreate, handleSubmit }) {
   const fileInputRef = useRef();
   const [filePath, setFilePath] = useState(null);
   const [name, setName] = useState(null);
-  const [args, setArgs] = useState([]);
+  const [params, setParams] = useState([]);
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -19,7 +19,7 @@ function Create({ hideCreate, handleSubmit }) {
   const handleLocalSubmit = (e) => {
     e.preventDefault();
     if (name && filePath) {
-      handleSubmit(name, filePath, args);
+      handleSubmit(name, filePath, params);
     }
   };
 
@@ -43,6 +43,7 @@ function Create({ hideCreate, handleSubmit }) {
         </div>
         <div className="flex flex-col">
           <input
+            autoFocus
             placeholder="Script Name"
             onChange={handleNameChange}
             id="name"
@@ -59,7 +60,7 @@ function Create({ hideCreate, handleSubmit }) {
             type="file"
           />
 
-          <div>Add Args</div>
+          {/*<div>Add Args</div>*/}
         </div>
         <button
           disabled={!(name && filePath)}

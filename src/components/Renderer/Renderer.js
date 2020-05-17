@@ -1,10 +1,11 @@
 import React from 'react';
-import { Converter } from 'showdown';
+import showdown from 'showdown';
 import './github-markdown.css';
 import PropTypes from 'prop-types';
+import showdownHighlight from 'showdown-highlight';
 
 function Renderer({ content }) {
-  const converter = new Converter();
+  const converter = new showdown.Converter({ extensions: [showdownHighlight] });
   const html = converter.makeHtml(content);
 
   return (

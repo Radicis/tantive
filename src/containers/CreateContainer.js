@@ -15,12 +15,12 @@ function CreateContainer() {
     });
   };
 
-  const handleSubmit = async (name, filePath, args) => {
+  const handleSubmit = async (name, filePath, params = []) => {
     try {
       const { data } = await axios.post(`http://${host}:${port}/scripts`, {
         name,
         path: filePath,
-        args
+        params
       });
       dispatch({
         type: 'CREATE_SCRIPT',

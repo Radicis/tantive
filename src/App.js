@@ -1,4 +1,5 @@
 import './assets/css/index.css';
+import './assets/css/darcula.css';
 import React from 'react';
 import Store from './store/Store';
 import RendererBridgeContainer from './containers/RendererBridgeContainer';

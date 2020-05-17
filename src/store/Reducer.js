@@ -98,7 +98,7 @@ const Reducer = (state, action) => {
     case 'CREATE_SCRIPT':
       return {
         ...state,
-        documents: [...state.scripts, action.payload]
+        scripts: [...state.scripts, action.payload]
       };
     case 'SET_WINDOW_STATUS':
       return {

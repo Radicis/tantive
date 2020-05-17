@@ -18,11 +18,10 @@ function SearchItem({
 
   const grow = useSpring({
     config: {
-      delay: 200,
       duration: holding ? 2000 : 200
     },
     w: !holding ? 0 : 100,
-    opacity: holding ? 0.5 : 0
+    opacity: holding ? 0.75 : 0.2
   });
 
   const handleMouseDown = (id, type) => {
@@ -38,7 +37,7 @@ function SearchItem({
         } else {
           deleteDocument();
         }
-      }, 2000)
+      }, 2500)
     );
   };
 

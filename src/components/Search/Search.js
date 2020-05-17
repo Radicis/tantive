@@ -99,7 +99,7 @@ function Search({
       {filtered ? (
         filtered.length > 0 ? (
           <div
-            className="text-xl pb-2 flex flex-col flex-grow overflow-auto"
+            className="text-xl pb-6 flex flex-col flex-grow overflow-auto"
             style={{ maxHeight: '75vh' }}
           >
             {filtered.map(renderItem)}

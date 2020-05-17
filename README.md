@@ -5,8 +5,9 @@ Electron/React/express Markdown Editor and Js script runner with fuzzy searching
 
 * Parameter CRUD for scripts
 * Arguments setting for scripts
-* handle new documents without saving immediately
+* ~~handle new documents without saving immediately~~
 * console window
+* ~~syntax highlighting~~
 * export md files as md/pdf
 * save logs
 

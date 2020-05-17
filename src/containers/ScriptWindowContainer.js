@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../store/Store';
 import { ipcRenderer } from 'electron';
 import axios from 'axios';
@@ -31,13 +31,23 @@ function ScriptWindowContainer({
     closeWindow();
   };
 
-  const deleteScript = () => {
-    // TODO: Delete the document
-
-    dispatch({
-      type: 'CLOSE_WINDOW',
-      payload: windowId
-    });
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5555/scripts/${id}`);
+      dispatch({
+        type: 'CLOSE_WINDOW',
+        payload: windowId
+      });
+      dispatch({
+        type: 'DELETE_SCRIPT',
+        payload: id
+      });
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
+    }
   };
 
   const handleParamsChange = (params) => {
@@ -65,7 +75,7 @@ function ScriptWindowContainer({
     );
   };
 
-  const handleNameChange = (name) => {
+  const handleNameChange = (id, name) => {
     clearTimeout(nameUpdateTimeout);
     setNameUpdateTimeout(
       setTimeout(async () => {
@@ -98,6 +108,13 @@ function ScriptWindowContainer({
     ipcRenderer.send('terminate', { runId });
   };
 
+  useEffect(() => {
+    return () => {
+      ipcRenderer.send('terminate', { runId });
+      console.log('removed');
+    };
+  }, []);
+
   return (
     <ScriptWindow
       focused={focused}
@@ -111,6 +128,7 @@ function ScriptWindowContainer({
       handleNameChange={handleNameChange}
       terminateScript={() => terminateScript()}
       runScript={() => runScript()}
+      handleDelete={() => handleDelete(id)}
       setFocused={setFocused}
       setArgs={setArgs}
     />

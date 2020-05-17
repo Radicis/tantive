@@ -5,7 +5,8 @@ import {
   faWindowClose,
   faRemoveFormat,
   faSquare,
-  faEdit
+  faEdit,
+  faSkullCrossbones
 } from '@fortawesome/free-solid-svg-icons';
 import Editor from '../Editor/Editor';
 import Renderer from '../Renderer/Renderer';
@@ -20,7 +21,8 @@ function EditorWindow({
   isNew,
   status,
   canExpand,
-  handleNameChange
+  handleNameChange,
+  handleDelete
 }) {
   const [render, setRender] = useState(!isNew);
   const [localIsNew, setIsNew] = useState(isNew);
@@ -58,6 +60,12 @@ function EditorWindow({
                 placeholder="Type Name.."
               />
               <FontAwesomeIcon icon={faEdit} color="#c53030" />
+              <FontAwesomeIcon
+                onClick={handleDelete}
+                className="ml-2 cursor-pointer"
+                icon={faSkullCrossbones}
+                color="#c53030"
+              />
             </div>
           )}
         </div>
@@ -99,6 +107,7 @@ EditorWindow.propTypes = {
   isNew: PropTypes.bool,
   canExpand: PropTypes.bool,
   handleContentChange: PropTypes.func,
+  handleDelete: PropTypes.func,
   handleNameChange: PropTypes.func,
   setFocused: PropTypes.func
 };

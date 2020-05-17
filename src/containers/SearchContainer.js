@@ -49,7 +49,7 @@ function SearchContainer() {
     try {
       await axios.delete(`http://${host}:${port}/documents/${id}`);
       dispatch({
-        type: 'DELETE_ITEM',
+        type: 'DELETE_DOCUMENT',
         payload: id
       });
     } catch (e) {
@@ -64,7 +64,7 @@ function SearchContainer() {
     try {
       await axios.delete(`http://${host}:${port}/scripts/${id}`);
       dispatch({
-        type: 'DELETE_ITEM',
+        type: 'DELETE_SCRIPT',
         payload: id
       });
     } catch (e) {

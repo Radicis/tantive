@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faIndent } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import { animated, useSpring, config } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 
 function SearchItem({
   type,
@@ -17,11 +17,11 @@ function SearchItem({
 
   const grow = useSpring({
     config: {
-      ...config.stiff,
       delay: 200,
-      duration: 2000
+      duration: holding ? 2000 : 200
     },
-    w: !holding ? 0 : 100
+    w: !holding ? 0 : 100,
+    opacity: holding ? 0.5 : 0.15
   });
 
   const handleMouseDown = (id, type) => {
@@ -44,13 +44,10 @@ function SearchItem({
       clearTimeout(holdTimeout);
       setHolding(false);
     } else {
+      clearTimeout(holdTimeout);
+      setHolding(false);
       handleClick();
     }
-  };
-
-  const handleMouseOut = () => {
-    clearTimeout(holdTimeout);
-    setHolding(false);
   };
 
   return (
@@ -58,13 +55,12 @@ function SearchItem({
       {type ? (
         <div
           key={id}
-          className="py-2 px-4 text-gray-100 cursor-pointer hover:bg-dark items-center flex flex-row select-none"
+          className="py-2 px-4 text-gray-100 cursor-pointer hover:bg-dark relative select-none"
           onMouseDown={() => handleMouseDown(id, 'S')}
           onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseOut}
         >
           <animated.div
-            className="bg-red-900 opacity-50 absolute top-0 left-0 h-full"
+            className="bg-red-900 opacity-50 absolute top-0 left-0 h-full z-10"
             style={{
               ...grow,
               width: grow.w.interpolate((w) => {
@@ -72,16 +68,17 @@ function SearchItem({
               })
             }}
           />
-          <div className="flex flex-grow text-mid">{name}</div>
-          <FontAwesomeIcon className="mr-l" icon={faCode} color="#c53030" />
+          <div className="items-center flex flex-row z-20">
+            <div className="flex flex-grow text-mid">{name}</div>
+            <FontAwesomeIcon className="mr-l" icon={faCode} color="#c53030" />
+          </div>
         </div>
       ) : (
         <div
           key={id}
           onMouseDown={() => handleMouseDown(id)}
           onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseOut}
-          className="py-2 px-4 text-gray-100 cursor-pointer hover:bg-dark items-center flex flex-row select-none"
+          className="py-2 px-4 text-gray-100 cursor-pointer hover:bg-dark relative select-none"
         >
           <animated.div
             className="bg-red-900 opacity-50 absolute top-0 left-0 h-full"
@@ -92,8 +89,10 @@ function SearchItem({
               })
             }}
           />
-          <div className="flex flex-grow text-mid">{name}</div>
-          <FontAwesomeIcon className="ml-4" icon={faIndent} color="#c53030" />
+          <div className="items-center flex flex-row z-20">
+            <div className="flex flex-grow text-mid">{name}</div>
+            <FontAwesomeIcon className="ml-4" icon={faIndent} color="#c53030" />
+          </div>
         </div>
       )}
     </React.Fragment>

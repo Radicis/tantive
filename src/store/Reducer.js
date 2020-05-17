@@ -4,6 +4,7 @@ const createNewScriptWindow = ({ id, runId }, scripts, windowId) => {
   return {
     windowId,
     runId,
+    id,
     params,
     name,
     type: 'SCRIPT',
@@ -135,6 +136,18 @@ const Reducer = (state, action) => {
           }
           return w;
         })
+      };
+    case 'DELETE_DOCUMENT':
+      return {
+        ...state,
+        windows: [...state.windows.filter((w) => w.id !== action.payload)],
+        documents: [...state.documents.filter((d) => d.id !== action.payload)]
+      };
+    case 'DELETE_SCRIPT':
+      return {
+        ...state,
+        windows: [...state.windows.filter((w) => w.id !== action.payload)],
+        scripts: [...state.scripts.filter((s) => s.id !== action.payload)]
       };
     case 'CLOSE_WINDOWS':
       return {

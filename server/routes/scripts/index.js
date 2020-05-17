@@ -16,4 +16,9 @@ router.put('/:id', (req, res) => {
   return res.json(scripts.update(id, item));
 });
 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  return res.json(scripts.remove(id));
+});
+
 module.exports = router;

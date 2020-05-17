@@ -28,8 +28,12 @@ function Search({
     );
   }, [scripts, documents]);
 
-  const filter = (e) => {
+  const handleChange = (e) => {
     const { value } = e.target;
+    filter(value);
+  };
+
+  const filter = (value) => {
     if (value === '') {
       setFiltered(null);
     } else if (value === '*') {
@@ -47,6 +51,16 @@ function Search({
     e.stopPropagation();
   };
 
+  const handleDeleteScript = (id) => {
+    setFiltered(filtered.filter((i) => i.id !== id));
+    deleteScript(id);
+  };
+
+  const handleDeleteDocument = (id) => {
+    setFiltered(filtered.filter((i) => i.id !== id));
+    deleteDocument(id);
+  };
+
   const renderItem = (item) => {
     const { name, type, id } = item;
     return (
@@ -54,8 +68,8 @@ function Search({
         key={id}
         name={name}
         type={type}
-        deleteDocument={() => deleteDocument(id)}
-        deleteScript={() => deleteScript(id)}
+        deleteDocument={() => handleDeleteDocument(id)}
+        deleteScript={() => handleDeleteScript(id)}
         handleClick={() =>
           type ? createScriptWindow(id) : createEditorWindow(id)
         }
@@ -78,19 +92,21 @@ function Search({
         <input
           className="bg-light flex flex-grow outline-none"
           placeholder="Search..."
-          onChange={filter}
+          onChange={handleChange}
         />
       </div>
       {filtered ? (
         filtered.length > 0 ? (
           <div
-            className="text-xl pb-6 flex flex-col flex-grow overflow-auto"
+            className="text-xl pb-2 flex flex-col flex-grow overflow-auto"
             style={{ maxHeight: '75vh' }}
           >
             {filtered.map(renderItem)}
           </div>
         ) : (
-          <div className="text-center my-4 px-4">No Results</div>
+          <div className="text-center font-semi-bold text-xl pb-4">
+            No Results
+          </div>
         )
       ) : (
         ''

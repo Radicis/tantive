@@ -5,6 +5,7 @@ import {
   faStopCircle,
   faChevronCircleRight,
   faWindowClose,
+  faSkullCrossbones,
   faCog,
   faSquare,
   faEdit
@@ -18,6 +19,7 @@ function ScriptWindow({
   runScript,
   terminateScript,
   handleNameChange,
+  handleDelete,
   setArgs,
   status,
   setFocused,
@@ -83,6 +85,12 @@ function ScriptWindow({
                 placeholder="Type Name.."
               />
               <FontAwesomeIcon icon={faEdit} color="#c53030" />
+              <FontAwesomeIcon
+                onClick={handleDelete}
+                className="ml-2 cursor-pointer"
+                icon={faSkullCrossbones}
+                color="#c53030"
+              />
             </div>
           )}
         </div>
@@ -137,6 +145,7 @@ ScriptWindow.propTypes = {
   canExpand: PropTypes.bool,
   terminateScript: PropTypes.func,
   handleNameChange: PropTypes.func,
+  handleDelete: PropTypes.func,
   setArgs: PropTypes.func,
   setFocused: PropTypes.func
 };

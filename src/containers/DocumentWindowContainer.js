@@ -21,12 +21,23 @@ function DocumentWindowContainer({
   const [updateTimeout, setUpdateTimeout] = useState(null);
   const [nameUpdateTimeout, setNameUpdateTimeout] = useState(null);
 
-  const deleteDocument = (windowId) => {
-    // TODO: Delete the document
-    dispatch({
-      type: 'CLOSE_WINDOW',
-      payload: windowId
-    });
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5555/documents/${id}`);
+      dispatch({
+        type: 'CLOSE_WINDOW',
+        payload: windowId
+      });
+      dispatch({
+        type: 'DELETE_DOCUMENT',
+        payload: id
+      });
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: e
+      });
+    }
   };
 
   const handleContentChange = (content) => {
@@ -104,6 +115,7 @@ function DocumentWindowContainer({
       canExpand={canExpand}
       handleContentChange={handleContentChange}
       handleNameChange={handleNameChange}
+      handleDelete={() => handleDelete(id)}
       setFocused={setFocused}
     />
   );
@@ -113,7 +125,7 @@ DocumentWindowContainer.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   content: PropTypes.string,
-  windowId: PropTypes.string,
+  windowId: PropTypes.number,
   status: PropTypes.string,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,

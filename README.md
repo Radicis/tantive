@@ -11,6 +11,24 @@ Electron/React/express Markdown Editor and Js script runner with fuzzy searching
 * export md files as md/pdf
 * save logs
 
+## Run in dev mode
+
+```
+git clone https://github.com/Radicis/tantive.git
+npm i
+npm start
+```
+
+## Build executable
+
+```
+git clone https://github.com/Radicis/tantive.git
+npm i
+npm run package
+```
+
+## Screens
+
 
 ![tantive](https://github.com/Radicis/tantive/blob/master/images/tantive1.PNG?raw=true)
 

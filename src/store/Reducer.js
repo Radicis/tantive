@@ -23,7 +23,7 @@ const createNewDocumentWindow = (id, documents, windowId, isNew) => {
     name,
     content,
     isNew,
-    status: 'New Document'
+    status: isNew ? 'New Document' : 'Ready'
   };
 };
 

@@ -7,8 +7,9 @@ import {
   faWindowClose,
   faSkullCrossbones,
   faCog,
-  faSquare,
-  faEdit
+  faEdit,
+  faWindowMinimize,
+  faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
 import ScriptConfig from '../ScriptConfig/ScriptConfig';
 
@@ -98,9 +99,23 @@ function ScriptWindow({
           <FontAwesomeIcon icon={faCog} color="#c53030" size="lg" />
         </div>
         {canExpand ? (
-          <div className="cursor-pointer mr-2" onClick={setFocused}>
-            <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
-          </div>
+          focused ? (
+            <div className="cursor-pointer mr-2" onClick={setFocused}>
+              <FontAwesomeIcon
+                icon={faWindowMinimize}
+                color="#c53030"
+                size="lg"
+              />
+            </div>
+          ) : (
+            <div className="cursor-pointer mr-2" onClick={setFocused}>
+              <FontAwesomeIcon
+                icon={faWindowMaximize}
+                color="#c53030"
+                size="lg"
+              />
+            </div>
+          )
         ) : (
           ''
         )}

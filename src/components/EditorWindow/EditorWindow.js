@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWindowClose,
   faRemoveFormat,
-  faSquare,
+  faWindowMinimize,
+  faWindowMaximize,
   faEdit,
   faSkullCrossbones
 } from '@fortawesome/free-solid-svg-icons';
 import Editor from '../Editor/Editor';
 import Renderer from '../Renderer/Renderer';
+import { animated, useSpring, config } from 'react-spring';
 
 function EditorWindow({
   name,
@@ -22,6 +24,7 @@ function EditorWindow({
   status,
   canExpand,
   handleNameChange,
+  isEven,
   handleDelete
 }) {
   const [render, setRender] = useState(!isNew);
@@ -41,8 +44,20 @@ function EditorWindow({
     setLocalName(value);
     handleNameChange(value);
   };
+  const props = useSpring({
+    config: config.stiff,
+    to: {
+      transform: 'translate3d(0,0,0)',
+      opacity: 1
+    },
+    from: {
+      transform: isEven ? 'translate3d(-100px,0,0)' : 'translate3d(100px,0,0)',
+      opacity: 0
+    }
+  });
   return (
-    <div
+    <animated.div
+      style={props}
       className={`window border-light flex flex-col text-mid ${
         focused ? 'absolute w-full h-full' : ''
       }`}
@@ -73,9 +88,23 @@ function EditorWindow({
           <FontAwesomeIcon icon={faRemoveFormat} color="#c53030" size="lg" />
         </div>
         {canExpand ? (
-          <div className="cursor-pointer mr-2" onClick={setFocused}>
-            <FontAwesomeIcon icon={faSquare} color="#c53030" size="lg" />
-          </div>
+          focused ? (
+            <div className="cursor-pointer mr-2" onClick={setFocused}>
+              <FontAwesomeIcon
+                icon={faWindowMinimize}
+                color="#c53030"
+                size="lg"
+              />
+            </div>
+          ) : (
+            <div className="cursor-pointer mr-2" onClick={setFocused}>
+              <FontAwesomeIcon
+                icon={faWindowMaximize}
+                color="#c53030"
+                size="lg"
+              />
+            </div>
+          )
         ) : (
           ''
         )}
@@ -94,7 +123,7 @@ function EditorWindow({
         )}
       </div>
       <div className="bg-light text-right text-xs p-2">{status}</div>
-    </div>
+    </animated.div>
   );
 }
 
@@ -104,6 +133,7 @@ EditorWindow.propTypes = {
   status: PropTypes.string,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
+  isEven: PropTypes.bool,
   isNew: PropTypes.bool,
   canExpand: PropTypes.bool,
   handleContentChange: PropTypes.func,

@@ -13,6 +13,7 @@ function DocumentWindowContainer({
   setFocused,
   focused,
   canExpand,
+  isEven,
   status,
   isNew
 }) {
@@ -109,6 +110,7 @@ function DocumentWindowContainer({
       focused={focused}
       content={content}
       isNew={isNew}
+      isEven={isEven}
       name={name}
       status={status}
       closeWindow={closeWindow}
@@ -129,6 +131,7 @@ DocumentWindowContainer.propTypes = {
   status: PropTypes.string,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
+  isEven: PropTypes.bool,
   canExpand: PropTypes.bool,
   isNew: PropTypes.bool,
   setFocused: PropTypes.func

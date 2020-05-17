@@ -9,17 +9,14 @@
     "url": "https://github.com/radicis/tantive.git"
   },
   "author": {
-    "name": "Adamn Lloyd",
+    "name": "Adam Lloyd",
     "email": "alloyddesign@gmail.com",
     "url": "https://github.com/radicis"
   },
   "keywords": [
-    "app",
-    "boilerplate",
     "electron",
-    "open",
-    "open-source",
-    "postcss",
+    "express",
+    "tailwindcss",
     "react",
     "reactjs",
     "source",
@@ -52,7 +49,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-spring": "^8.0.27",
-    "showdown": "^1.9.1"
+    "showdown": "^1.9.1",
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -86,7 +84,6 @@
     "prettier": "^2.0.5",
     "style-loader": "^1.2.0",
     "tailwindcss": "^1.4.6",
-    "uuid": "^8.0.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

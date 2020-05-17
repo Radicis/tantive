@@ -14,6 +14,7 @@ function SearchItem({
 }) {
   const [holdTimeout, setHoldTimeout] = useState(null);
   const [holding, setHolding] = useState(false);
+  const [canClick, setCanClick] = useState(false);
 
   const grow = useSpring({
     config: {
@@ -21,12 +22,14 @@ function SearchItem({
       duration: holding ? 2000 : 200
     },
     w: !holding ? 0 : 100,
-    opacity: holding ? 0.5 : 0.15
+    opacity: holding ? 0.5 : 0
   });
 
   const handleMouseDown = (id, type) => {
+    setCanClick(true);
     setTimeout(() => {
       setHolding(true);
+      setCanClick(false);
     }, 200);
     setHoldTimeout(
       setTimeout(() => {
@@ -40,14 +43,11 @@ function SearchItem({
   };
 
   const handleMouseUp = () => {
-    if (holding) {
-      clearTimeout(holdTimeout);
-      setHolding(false);
-    } else {
-      clearTimeout(holdTimeout);
-      setHolding(false);
+    if (canClick) {
       handleClick();
     }
+    clearTimeout(holdTimeout);
+    setHolding(false);
   };
 
   return (

@@ -20,6 +20,7 @@ body, #root {
 
 html, body {
   @apply bg-dark;
+  overflow: hidden;
 }
 
 .main-grid {
@@ -27,7 +28,12 @@ html, body {
 }
 
 input {
-  max-width: 100%
+  width: 100%;
+}
+
+#nodeToRenderAsPDF {
+  position:fixed;
+  z-index: -99;
 }
 
 .modal-content {

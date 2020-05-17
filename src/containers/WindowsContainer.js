@@ -29,7 +29,7 @@ function WindowsContainer() {
   return (
     <React.Fragment>
       {windows && windows.length > 0 ? (
-        <div className="windows relative w-full h-full overflow-auto">
+        <div className="windows relative w-full h-full overflow-hidden">
           {windows.map((window) => {
             const {
               windowId,
@@ -71,6 +71,7 @@ function WindowsContainer() {
                 focused={focused === windowId}
                 content={content}
                 status={status}
+                isEven={windowId % 2 === 0}
                 isNew={isNew}
                 name={name}
                 canExpand={windows.length > 1}

@@ -9,30 +9,10 @@ function SidebarContainer() {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(Context);
 
-  const createDocument = async () => {
-    try {
-      const { data } = await axios.post(`http://${host}:${port}/documents`, {
-        content: '',
-        name: 'UNTITLED'
-      });
-      dispatch({
-        type: 'CREATE_DOCUMENT',
-        payload: data
-      });
-      const { id } = data;
-      dispatch({
-        type: 'CREATE_DOCUMENT_WINDOW',
-        payload: {
-          id,
-          isNew: true
-        }
-      });
-    } catch (e) {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: e
-      });
-    }
+  const createNewDocument = () => {
+    dispatch({
+      type: 'CREATE_NEW_DOCUMENT_WINDOW'
+    });
   };
 
   const createScript = () => {
@@ -56,7 +36,7 @@ function SidebarContainer() {
   return (
     <Sidebar
       createScript={createScript}
-      createDocument={createDocument}
+      createDocument={createNewDocument}
       find={find}
       showHelp={showHelp}
     />

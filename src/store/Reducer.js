@@ -14,7 +14,7 @@ const createNewScriptWindow = ({ id, runId }, scripts, windowId) => {
   };
 };
 
-const createNewDocumentWindow = (id, documents, windowId, isNew) => {
+const createDocumentWindow = (id, documents, windowId) => {
   const document = documents.find((d) => id === d.id);
   const { name, content } = document;
   return {
@@ -22,8 +22,17 @@ const createNewDocumentWindow = (id, documents, windowId, isNew) => {
     id,
     name,
     content,
-    isNew,
-    status: isNew ? 'New Document' : 'Ready'
+    status: 'Ready'
+  };
+};
+
+const createNewDocumentWindow = (documents, windowId) => {
+  return {
+    windowId,
+    name: '',
+    content: '',
+    isNew: true,
+    status: 'New Document'
   };
 };
 
@@ -39,13 +48,23 @@ const Reducer = (state, action) => {
         ...state,
         documents: action.payload
       };
+    case 'CREATE_NEW_DOCUMENT_WINDOW':
+      return {
+        ...state,
+        windows: [
+          ...state.windows,
+          {
+            ...createNewDocumentWindow(state.documents, state.windows.length)
+          }
+        ]
+      };
     case 'CREATE_DOCUMENT_WINDOW':
       return {
         ...state,
         windows: [
           ...state.windows,
           {
-            ...createNewDocumentWindow(
+            ...createDocumentWindow(
               action.payload.id,
               state.documents,
               state.windows.length,
@@ -57,7 +76,29 @@ const Reducer = (state, action) => {
     case 'CREATE_DOCUMENT':
       return {
         ...state,
-        documents: [...state.documents, action.payload]
+        documents: [...state.documents, action.payload.data],
+        windows: state.windows.map((w) => {
+          if (w.windowId === action.payload.windowId) {
+            return {
+              ...w,
+              ...action.payload.data
+            };
+          }
+          return w;
+        })
+      };
+    case 'UPDATE_WINDOW_CONTENT':
+      return {
+        ...state,
+        windows: state.windows.map((w) => {
+          if (w.windowId === action.payload.windowId) {
+            return {
+              ...w,
+              ...action.payload.data
+            };
+          }
+          return w;
+        })
       };
     case 'UPDATE_DOCUMENT':
       return {

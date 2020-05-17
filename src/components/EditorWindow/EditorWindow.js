@@ -18,12 +18,14 @@ function EditorWindow({
   closeWindow,
   content,
   handleContentChange,
+  updateWindowContent,
   setFocused,
   focused,
   isNew,
   status,
   canExpand,
   handleNameChange,
+  isSaved,
   isEven,
   handleDelete
 }) {
@@ -39,11 +41,13 @@ function EditorWindow({
     setIsNew(false);
     setRender(!render);
   };
+
   const handleChange = (e) => {
     const { value } = e.target;
     setLocalName(value);
     handleNameChange(value);
   };
+
   const props = useSpring({
     config: config.stiff,
     to: {
@@ -55,12 +59,11 @@ function EditorWindow({
       opacity: 0
     }
   });
+
   return (
     <animated.div
       style={props}
-      className={`window border-light flex flex-col text-mid ${
-        focused ? 'absolute w-full h-full' : ''
-      }`}
+      className="border-light flex flex-col text-mid h-full w-full"
     >
       <div className="p-2 flex flex-row bg-light">
         <div className="flex flex-grow">
@@ -114,12 +117,14 @@ function EditorWindow({
       </div>
       <div className="bg-dark flex flex-grow overflow-auto p-2">
         {!localIsNew && render ? (
-          <Renderer
-            handleContentChange={handleContentChange}
+          <Renderer content={content} />
+        ) : (
+          <Editor
+            handleContentChange={
+              isSaved ? handleContentChange : updateWindowContent
+            }
             content={content}
           />
-        ) : (
-          <Editor handleContentChange={handleContentChange} content={content} />
         )}
       </div>
       <div className="bg-light text-right text-xs p-2">{status}</div>
@@ -133,12 +138,14 @@ EditorWindow.propTypes = {
   status: PropTypes.string,
   closeWindow: PropTypes.func,
   focused: PropTypes.bool,
+  isSaved: PropTypes.bool,
   isEven: PropTypes.bool,
   isNew: PropTypes.bool,
   canExpand: PropTypes.bool,
   handleContentChange: PropTypes.func,
   handleDelete: PropTypes.func,
   handleNameChange: PropTypes.func,
+  updateWindowContent: PropTypes.func,
   setFocused: PropTypes.func
 };
 

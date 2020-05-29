@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 function Sidebar({ createScript, createDocument, find, showHelp }) {
   return (
-    <div className="bg-light flex flex-col flex-grow overflow-auto text-mid items-stretch justify-start p-4">
+    <aside className="bg-light flex flex-col flex-grow overflow-auto text-mid items-stretch justify-start p-4">
       <div className="flex p-2 opacity-25 mb-4 justify-center">
         <FontAwesomeIcon icon={faFeatherAlt} color="#fefefe" size="lg" />
       </div>
@@ -42,7 +42,7 @@ function Sidebar({ createScript, createDocument, find, showHelp }) {
       >
         <FontAwesomeIcon icon={faQuestion} color="#a9a9aa" />
       </div>
-    </div>
+    </aside>
   );
 }
 

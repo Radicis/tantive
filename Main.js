@@ -8,7 +8,6 @@ const RunString = require('./server/models/runString');
 const server = require('./server');
 const { scripts } = require('./server/store');
 const RunningScripts = require('./server/models/runningScripts');
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;

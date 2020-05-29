@@ -61,11 +61,11 @@ function EditorWindow({
   });
 
   return (
-    <animated.div
+    <animated.section
       style={props}
       className="border-light flex flex-col text-mid h-full w-full"
     >
-      <div className="p-2 flex flex-row bg-light">
+      <header className="p-2 flex flex-row bg-light">
         <div className="flex flex-grow">
           {!localIsNew && render ? (
             localName
@@ -114,7 +114,7 @@ function EditorWindow({
         <div className="cursor-pointer" onClick={closeWindow}>
           <FontAwesomeIcon icon={faWindowClose} color="#c53030" size="lg" />
         </div>
-      </div>
+      </header>
       <div className="bg-dark flex flex-grow overflow-auto p-2">
         {!localIsNew && render ? (
           <Renderer content={content} />
@@ -127,8 +127,8 @@ function EditorWindow({
           />
         )}
       </div>
-      <div className="bg-light text-right text-xs p-2">{status}</div>
-    </animated.div>
+      <footer className="bg-light text-right text-xs p-2">{status}</footer>
+    </animated.section>
   );
 }
 

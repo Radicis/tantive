@@ -29,7 +29,7 @@ function WindowsContainer() {
   return (
     <React.Fragment>
       {windows && windows.length > 0 ? (
-        <div className="windows relative w-full h-full overflow-hidden">
+        <main className="windows relative w-full h-full overflow-hidden">
           {windows.map((window) => {
             const {
               windowId,
@@ -80,7 +80,7 @@ function WindowsContainer() {
               />
             );
           })}
-        </div>
+        </main>
       ) : (
         <div className="w-full h-full flex items-center flex-col justify-center opacity-25 font-hairline">
           <div className="text-3xl text-gray-100 mb-4">Tantive</div>

@@ -98,20 +98,23 @@ function Search({
       </div>
       {filtered ? (
         filtered.length > 0 ? (
-          <div
-            className="text-xl pb-6 flex flex-col flex-grow overflow-auto"
-            style={{ maxHeight: '75vh' }}
-          >
-            {filtered.map(renderItem)}
-          </div>
+          <React.Fragment>
+            <div
+              className="text-xl pb-2 flex flex-col flex-grow overflow-auto"
+              style={{ maxHeight: '75vh' }}
+            >
+              {filtered.map(renderItem)}
+            </div>
+            <div className="text-sm text-dark text-center pb-4">
+              Hold to Delete
+            </div>
+          </React.Fragment>
         ) : (
           <div className="text-center font-semi-bold text-xl pb-4">
             No Results
           </div>
         )
-      ) : (
-        ''
-      )}
+      ) : null}
     </form>
   );
 }

@@ -34,7 +34,9 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    icon: path.join(__dirname, 'build', 'icon.png'),
+    title: 'Tantive - Blockade Runner'
   });
 
   // and load the index.html of the app.

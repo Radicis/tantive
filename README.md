@@ -15,16 +15,16 @@ Electron/React/express Markdown Editor and Js script runner with fuzzy searching
 
 ```
 git clone https://github.com/Radicis/tantive.git
-npm i
-npm start
+npm i (yarn)
+npm start (yarn start)
 ```
 
 ## Build executable
 
 ```
 git clone https://github.com/Radicis/tantive.git
-npm i
-npm run package
+npm i (yarn)
+npm run build (yarn package)
 ```
 
 ## Screens

@@ -39,7 +39,7 @@ function Create({ hideCreate, handleSubmit }) {
         className="search-form rounded-lg bg-light shadow-xl shadow-xl border border-mid text-mid flex flex-col p-4 mt-12"
       >
         <div className="text-center text-lg font-semi-bold">
-          Create New Script
+          Create New Script ( WIP )
         </div>
         <div className="flex flex-col">
           <input

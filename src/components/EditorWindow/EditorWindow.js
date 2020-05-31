@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWindowClose,
-  faRemoveFormat,
   faWindowMinimize,
   faWindowMaximize,
-  faEdit,
-  faSkullCrossbones
+  faTrashAlt,
+  faEdit
 } from '@fortawesome/free-solid-svg-icons';
 import Editor from '../Editor/Editor';
 import Renderer from '../Renderer/Renderer';
@@ -77,18 +76,19 @@ function EditorWindow({
                 onChange={handleChange}
                 placeholder="Type Name.."
               />
-              <FontAwesomeIcon icon={faEdit} color="#c53030" />
-              <FontAwesomeIcon
-                onClick={handleDelete}
-                className="ml-2 cursor-pointer"
-                icon={faSkullCrossbones}
-                color="#c53030"
-              />
+              {isSaved ? (
+                <FontAwesomeIcon
+                  onClick={handleDelete}
+                  className="ml-2 cursor-pointer"
+                  icon={faTrashAlt}
+                  color="#c53030"
+                />
+              ) : null}
             </div>
           )}
         </div>
         <div className="cursor-pointer mr-2" onClick={toggleRender}>
-          <FontAwesomeIcon icon={faRemoveFormat} color="#c53030" size="lg" />
+          <FontAwesomeIcon icon={faEdit} color="#c53030" size="lg" />
         </div>
         {canExpand ? (
           focused ? (

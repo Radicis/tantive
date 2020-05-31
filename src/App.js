@@ -8,6 +8,7 @@ import MainContainer from './containers/MainContainer';
 import SearchContainer from './containers/SearchContainer';
 import CreateContainer from './containers/CreateContainer';
 import HelpContainer from './containers/HelpContainer';
+import ConfirmContainer from './containers/ConfirmContainer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <RendererBridgeContainer />
       <SetupContainer />
       <HelpContainer />
+      <ConfirmContainer />
       <SearchContainer />
       <CreateContainer />
       <MainContainer />

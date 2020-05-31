@@ -200,6 +200,26 @@ const Reducer = (state, action) => {
         ...state,
         windows: state.windows.filter((w) => w.windowId !== action.payload)
       };
+    case 'SET_CONFIRM_ACTION':
+      return {
+        ...state,
+        confirmAction: action.payload
+      };
+    case 'UNSET_CONFIRM_ACTION':
+      return {
+        ...state,
+        confirmAction: () => {}
+      };
+    case 'SHOW_CONFIRM':
+      return {
+        ...state,
+        showConfirm: action.payload
+      };
+    case 'HIDE_CONFIRM':
+      return {
+        ...state,
+        showConfirm: false
+      };
     case 'SHOW_CREATE':
       return {
         ...state,

@@ -12,21 +12,26 @@ function Confirm({ hideConfirm, content, confirm }) {
     >
       <div
         onClick={handleClick}
-        className="modal-content rounded-lg bg-light shadow-xl border border-mid text-mid flex flex-col p-4 mt-12"
+        className="modal-content rounded-lg bg-light shadow border border-mid text-mid flex flex-col p-4 mt-12"
       >
-        <div className="font-bold mb-4 text-xl text-center">Warning</div>
-        <div className="bg-dark p-6 overflow-auto rounded-lg text-center">
+        <div className="text-xl font-semi-bold p-8 overflow-auto rounded-lg text-center">
           <div>{content}</div>
         </div>
-        <div className="text-center font-semi-bold text-lg p-4">
+        <div className="text-center font-semi-bold text-lg mb-8">
           Are you sure?
         </div>
         <div className="flex flex-row font-semi-bold text-lg justify-center">
-          <button className="p-4 mr-8" onClick={confirm}>
-            Yes
-          </button>
-          <button className="p-4" onClick={hideConfirm}>
+          <button
+            className="border border-dark hover:border-mid rounded-lg px-10 py-2 mr-8"
+            onClick={hideConfirm}
+          >
             No
+          </button>
+          <button
+            className="border border-dark hover:border-mid rounded-lg px-10 py-2"
+            onClick={confirm}
+          >
+            Yes
           </button>
         </div>
       </div>

@@ -4,8 +4,6 @@ import axios from 'axios';
 import EditorWindow from '../components/EditorWindow/EditorWindow';
 import PropTypes from 'prop-types';
 import { host, port } from '../config';
-import Confirm from '../components/Confirm/Confirm';
-import { animated, config, useTransition } from 'react-spring';
 
 function DocumentWindowContainer({
   id,
@@ -22,7 +20,6 @@ function DocumentWindowContainer({
 }) {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(Context);
-  const [showConfirm, setShowConfirm] = useState(false);
   const [updateTimeout, setUpdateTimeout] = useState(null);
   const [nameUpdateTimeout, setNameUpdateTimeout] = useState(null);
 
@@ -49,7 +46,7 @@ function DocumentWindowContainer({
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:5555/documents/${id}`);
       dispatch({
@@ -148,50 +145,38 @@ function DocumentWindowContainer({
     );
   };
 
-  const transition = useTransition(showConfirm, null, {
-    config: config.stiff,
-    from: {
-      transform: 'translate3d(0,-50px,0)',
-      opacity: 0,
-      position: 'fixed'
-    },
-    enter: { transform: 'translate3d(0,0,0)', opacity: 1 },
-    leave: {
-      transform: 'translate3d(0,-50px,0)',
-      opacity: 0,
-      position: 'fixed'
-    }
-  });
-
   const confirmClose = () => {
     if (id) {
       closeWindow();
+    } else {
+      dispatch({
+        type: 'SET_CONFIRM_ACTION',
+        payload: closeWindow
+      });
+      dispatch({
+        type: 'SHOW_CONFIRM',
+        payload: 'You are about to close an unsaved document!'
+      });
     }
-    setShowConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    dispatch({
+      type: 'SET_CONFIRM_ACTION',
+      payload: handleDelete
+    });
+    dispatch({
+      type: 'SHOW_CONFIRM',
+      payload: 'You are about to delete this document?'
+    });
   };
 
   return (
     <div
-      className={`window border-light flex flex-col text-mid ${
-        focused ? 'absolute h-full w-full z-30' : ''
+      className={`window border-light flex flex-col text-mid h-full w-full ${
+        focused ? 'absolute z-30' : ''
       }`}
     >
-      {transition.map(
-        ({ item, key, props }) =>
-          item && (
-            <animated.div
-              key={key}
-              style={props}
-              className="modal flex w-full top-0 left-0 z-10 h-full fixed items-start justify-center"
-            >
-              <Confirm
-                hideConfirm={() => setShowConfirm(false)}
-                confirm={closeWindow}
-                content="You are about to close an unsaved document!"
-              />
-            </animated.div>
-          )
-      )}
       <EditorWindow
         focused={focused}
         content={content}
@@ -205,7 +190,7 @@ function DocumentWindowContainer({
         handleContentChange={handleContentChange}
         updateWindowContent={updateWindowContent}
         handleNameChange={handleNameChange}
-        handleDelete={() => handleDelete(id)}
+        handleDelete={confirmDelete}
         setFocused={setFocused}
       />
     </div>
